@@ -16,8 +16,14 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('e-mails')
 
-emails = SHEET.worksheet('e-mails')
+def get_email():
+    """
+    Get the email from user that should either be updated or added to spreadsheet
+    """
+    print("please enter the email.")
+    print("Example: john.doe@company.com\n")
 
-data = emails.get_all_values()
+    data_email = input("Enter your email here:")
+    print(f"The email you provided is {data_email}")
 
-print(data)
+get_email()
