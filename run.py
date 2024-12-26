@@ -4,7 +4,6 @@
 
 import os
 from notion_client import Client
-from pprint import pprint
 
 # Notion API token
 os.environ["NOTION_TOKEN"] = "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"
@@ -39,14 +38,14 @@ def add_email_to_database(email):
 
 def main():
     # Ask user that they want to do
-    action = input("Do you want to add or update email? (add/update): ").strip().lower()
+    action = input("Do you want to add or update email? (add/update):\n").strip().lower()
 
     if action not in ["add", "update"]:
-        print("Please choose 'add' or 'update'")
+        print("Please choose 'add' or 'update")
         return
 
     # Ask for email
-    email = input("Enter email: ").strip()
+    email = input("Enter email: \n").strip()
 
     # Search for email in database
     page_id = find_email_in_database(email)

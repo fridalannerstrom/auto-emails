@@ -1,1 +1,1 @@
-# Your requirements go here
+notion-client==2.3.0
