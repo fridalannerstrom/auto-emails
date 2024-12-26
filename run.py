@@ -2,16 +2,17 @@
 # You can delete these comments, but do not change the name of this file
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 
-import os
+import json
 from notion_client import Client
 
-# Notion API token
-os.environ["NOTION_TOKEN"] = "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"
+# Läs in API-token från creds.json
+with open("creds.json", "r") as file:
+    creds = json.load(file)
 
-# Connect to client
-notion = Client(auth=os.environ["NOTION_TOKEN"])
+# Initiera klienten med token från JSON
+notion = Client(auth=creds["NOTION_TOKEN"])
 
-# Set database ID
+# Databasens ID
 database_id = "168284e4604f8013a728d0aa102775aa"
 
 def find_email_in_database(email):
