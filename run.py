@@ -57,6 +57,23 @@ def add_email_to_database(email, company=None, notes=None):
     except Exception as e:
         print(f"Something went wrong: {e}")
 
+def update_email_notes(page_id):
+    """Update the notes for a specific email."""
+    try:
+        new_notes = input("Enter new notes (leave blank to skip): \n").strip()
+        if new_notes:
+            notion.pages.update(
+                page_id=page_id,
+                properties={
+                    "Notes": {"rich_text": [{"text": {"content": new_notes}}]},  # Uppdatera anteckningar
+                },
+            )
+            print(f"🟢 Success! Notes updated to: {new_notes}")
+        else:
+            print("🔵 No notes were added or updated.")
+    except Exception as e:
+        print(f"🔴 Something went wrong during the notes update: {e}")
+
 from datetime import datetime  # Import for current date
 
 VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
@@ -85,6 +102,12 @@ def update_email_status(page_id):
             },
         )
         print(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.")
+
+        # Ask to add or update notes
+        add_notes = input("Do you want to add or update notes? (yes/no): \n").strip().lower()
+        if add_notes == "yes":
+            update_email_notes(page_id)
+
     except Exception as e:
         print(f"🔴 Something went wrong during the update: {e}")
 
@@ -125,9 +148,13 @@ def main():
     elif action == "update":
         if page_id:
             print(f"🟢 Success! Found '{email}' in the database.")
-            update = input("Do you want to update status? (yes/no): \n").strip().lower()
-            if update == "yes":
+            update = input("Do you want to update status or notes? (status/notes): \n").strip().lower()
+            if update == "status":
                 update_email_status(page_id)
+            elif update == "notes":
+                update_email_notes(page_id)
+            else:
+                print("🔴 Invalid choice. Please choose 'status' or 'notes'.")
         else:
             print(f"🔴 Email '{email}' is not in the database. Can not update.")
 
