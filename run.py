@@ -26,7 +26,7 @@ def find_email_in_database(email):
     for page in response["results"]:
         properties = page["properties"]
         if properties["E-mail"]["title"][0]["text"]["content"] == email:
-            return True  # Email does exist in database
+            return page["id"]  # Email does exist in database
     return None  # Email does not exist in database
 
 def is_company_in_sales_list(company):
@@ -56,6 +56,37 @@ def add_email_to_database(email, company=None, notes=None):
         print(f"🟢 Succes! '{email}' has been added to the database.")
     except Exception as e:
         print(f"Something went wrong: {e}")
+
+from datetime import datetime  # Import for current date
+
+VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
+
+def update_email_status(page_id):
+    """Update the status and latest contact date for a specific email."""
+    try:
+        # Show the possible status options
+        print(f"Enter the new status. Can only be: {', '.join(VALID_STATUSES)}")
+        new_status = input("New status: \n").strip()
+
+        # Check if status is valid
+        if new_status not in VALID_STATUSES:
+            print(f"🔴 Invalid status '{new_status}'. Please use one of the valid statuses.")
+            return
+
+        # Get the current date
+        current_date = datetime.now().strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
+
+        # Update database with new properties
+        notion.pages.update(
+            page_id=page_id,
+            properties={
+                "Status": {"status": {"name": new_status}},  
+                "Latest contact": {"date": {"start": current_date}}, 
+            },
+        )
+        print(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.")
+    except Exception as e:
+        print(f"🔴 Something went wrong during the update: {e}")
 
 def main():
     # Ask user what they want to do
@@ -93,9 +124,10 @@ def main():
 
     elif action == "update":
         if page_id:
-            print(f"Email '{email}' is in the database.")
-            # Add function later
-            print("Function coming later...")
+            print(f"🟢 Success! Found '{email}' in the database.")
+            update = input("Do you want to update status? (yes/no): \n").strip().lower()
+            if update == "yes":
+                update_email_status(page_id)
         else:
             print(f"🔴 Email '{email}' is not in the database. Can not update.")
 
