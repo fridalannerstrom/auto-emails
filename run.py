@@ -15,6 +15,10 @@ notion = Client(auth=creds["NOTION_TOKEN"])
 # Databasens ID
 database_id = "168284e4604f8013a728d0aa102775aa"
 
+def is_valid_email(email):
+    """Check if email is valid"""
+    return "@" in email
+
 def find_email_in_database(email):
     """Search email in database."""
     response = notion.databases.query(database_id=database_id)
@@ -42,11 +46,16 @@ def main():
     action = input("Do you want to add or update email? (add/update):\n").strip().lower()
 
     if action not in ["add", "update"]:
-        print("Please choose 'add' or 'update")
+        print("Please choose 'add' or 'update'")
         return
 
     # Ask for email
     email = input("Enter email: \n").strip()
+
+    # Validate email
+    if not is_valid_email(email):
+        print(f"Email '{email}' is not valid. Please try again.")
+        return
 
     # Search for email in database
     page_id = find_email_in_database(email)
@@ -63,7 +72,7 @@ def main():
             # Add function later
             print("Function coming later...")
         else:
-            print(f"🔴 Email '{email}' is not in the database. Can not update. ")
+            print(f"🔴 Email '{email}' is not in the database. Can not update.")
 
 if __name__ == "__main__":
     main()
