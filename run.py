@@ -58,19 +58,60 @@ def add_email_to_database(email, company=None, notes=None):
         print(f"Something went wrong: {e}")
 
 def update_email_notes(page_id):
-    """Update the notes for a specific email."""
+    """Update the notes for a specific email dynamically."""
     try:
-        new_notes = input("Enter new notes (leave blank to skip): \n").strip()
-        if new_notes:
-            notion.pages.update(
-                page_id=page_id,
-                properties={
-                    "Notes": {"rich_text": [{"text": {"content": new_notes}}]},  # Uppdatera anteckningar
-                },
+        # Hämta den nuvarande sidan
+        page = notion.pages.retrieve(page_id=page_id)
+        current_notes = ""
+
+        # Hämta nuvarande anteckningar om de finns
+        if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"]:
+            current_notes = "".join(
+                [text["text"]["content"] for text in page["properties"]["Notes"]["rich_text"]]
             )
-            print(f"🟢 Success! Notes updated to: {new_notes}")
+            print(f"Current notes: {current_notes}")
         else:
-            print("🔵 No notes were added or updated.")
+            print("No current notes found.")
+
+        # Fråga användaren vad de vill göra
+        action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower()
+
+        if action == "add":
+            new_notes = input("Enter new notes to add:\n").strip()
+            updated_notes = f"{current_notes} {new_notes}".strip()
+            print(f"Updated notes: {updated_notes}")
+
+        elif action == "remove":
+            if not current_notes:
+                print("There are no notes to remove.")
+                return
+            print(f"Current notes: {current_notes}")
+            remove_text = input("Enter the text you want to remove:\n").strip()
+            updated_notes = current_notes.replace(remove_text, "").strip()
+            print(f"Updated notes: {updated_notes}")
+
+        elif action == "replace":
+            new_notes = input("Enter new notes to replace existing ones:\n").strip()
+            updated_notes = new_notes
+            print(f"Updated notes: {updated_notes}")
+
+        elif action == "skip":
+            print("No changes made to notes.")
+            return
+
+        else:
+            print("Invalid choice. No changes made to notes.")
+            return
+
+        # Uppdatera anteckningarna i Notion
+        notion.pages.update(
+            page_id=page_id,
+            properties={
+                "Notes": {"rich_text": [{"text": {"content": updated_notes}}]},
+            },
+        )
+        print(f"🟢 Success! Notes updated to: {updated_notes}")
+
     except Exception as e:
         print(f"🔴 Something went wrong during the notes update: {e}")
 
