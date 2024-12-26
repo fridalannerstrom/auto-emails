@@ -12,6 +12,12 @@ os.environ["NOTION_TOKEN"] = "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
 # Initiera klienten
 notion = Client(auth=os.environ["NOTION_TOKEN"])
 
-# Gör en förfrågan för att lista användare
-list_users_response = notion.users.list()
-pprint(list_users_response)
+# Databasens ID
+database_id = "168284e4604f8013a728d0aa102775aa"
+
+try:
+    # Fråga databasen
+    response = notion.databases.query(database_id=database_id)
+    pprint(response)
+except Exception as e:
+    print(f"Ett fel inträffade: {e}")
