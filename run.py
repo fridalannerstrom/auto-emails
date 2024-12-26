@@ -16,25 +16,54 @@ notion = Client(auth=os.environ["NOTION_TOKEN"])
 database_id = "168284e4604f8013a728d0aa102775aa"
 
 def find_email_in_database(email):
-    """Search through the database for email"""
+    """Search email in database."""
     response = notion.databases.query(database_id=database_id)
     for page in response["results"]:
         properties = page["properties"]
         if properties["E-mail"]["title"][0]["text"]["content"] == email:
-            return True  # Returnera True om e-posten finns
-    return False  # Returnera False om e-posten inte finns
+            return page["id"]  # Return page ID if email does exist
+    return None  # Return None if email does not exist
+
+def add_email_to_database(email):
+    """Add email to database."""
+    try:
+        notion.pages.create(
+            parent={"database_id": database_id},
+            properties={
+                "E-mail": {"title": [{"text": {"content": email}}]},
+            },
+        )
+        print(f"🟢 Succes! '{email}' has been added to the database.")
+    except Exception as e:
+        print(f"Something went wrong: {e}")
 
 def main():
-    # Ask user för an email
-    email = input("Enter the email you want to search: ")
+    # Ask user that they want to do
+    action = input("Do you want to add or update email? (add/update): ").strip().lower()
 
-    # Sök efter e-posten i databasen
-    email_found = find_email_in_database(email)
+    if action not in ["add", "update"]:
+        print("Please choose 'add' or 'update'")
+        return
 
-    if email_found:
-        print(f"The email '{email}' is already in the database.")
-    else:
-        print(f"The email '{email}' is not in the database. ")
+    # Ask for email
+    email = input("Enter email: ").strip()
+
+    # Search for email in database
+    page_id = find_email_in_database(email)
+
+    if action == "add":
+        if page_id:
+            print(f"🔴 Email '{email}' already exists. You can not add it again. ")
+        else:
+            add_email_to_database(email)
+
+    elif action == "update":
+        if page_id:
+            print(f"Email '{email}' is in the database.")
+            # Add function later
+            print("Function coming later...")
+        else:
+            print(f"🔴 Email '{email}' is not in the database. Can not update. ")
 
 if __name__ == "__main__":
     main()
