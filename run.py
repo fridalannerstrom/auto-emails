@@ -28,21 +28,27 @@ def find_email_in_database(email):
             return page["id"]  # Return page ID if email does exist
     return None  # Return None if email does not exist
 
-def add_email_to_database(email):
+def add_email_to_database(email, company=None, notes=None):
     """Add email to database."""
     try:
+        properties = {
+            "E-mail": {"title": [{"text": {"content": email}}]},
+        }
+        if company:
+            properties["Company"] = {"rich_text": [{"text": {"content": company}}]}
+        if notes:
+            properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
+        
         notion.pages.create(
             parent={"database_id": database_id},
-            properties={
-                "E-mail": {"title": [{"text": {"content": email}}]},
-            },
+            properties=properties,
         )
         print(f"🟢 Succes! '{email}' has been added to the database.")
     except Exception as e:
         print(f"Something went wrong: {e}")
 
 def main():
-    # Ask user that they want to do
+    # Ask user what they want to do
     action = input("Do you want to add or update email? (add/update):\n").strip().lower()
 
     if action not in ["add", "update"]:
@@ -62,9 +68,12 @@ def main():
 
     if action == "add":
         if page_id:
-            print(f"🔴 Email '{email}' already exists. You can not add it again. ")
+            print(f"🔴 Email '{email}' already exists. You can not add it again.")
         else:
-            add_email_to_database(email)
+            print("🟢 Great! Email does not exist in the database. Please provide additional details.")
+            company = input("Enter company name (optional):\n").strip()
+            notes = input("Enter notes (optional):\n").strip()
+            add_email_to_database(email, company, notes)
 
     elif action == "update":
         if page_id:
