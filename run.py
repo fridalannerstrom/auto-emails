@@ -5,28 +5,38 @@
 import json
 from notion_client import Client
 
-# Läs in API-token från creds.json
+# API-token from creds.json file
 with open("creds.json", "r") as file:
     creds = json.load(file)
 
-# Initiera klienten med token från JSON
+# set up client with API-token
 notion = Client(auth=creds["NOTION_TOKEN"])
 
-# Databasens ID
+# Database IDs
 database_id = "168284e4604f8013a728d0aa102775aa"
+company_database_id = "168284e4604f80d7acfac51891eb0e3c"
 
 def is_valid_email(email):
     """Check if email is valid"""
     return "@" in email
 
 def find_email_in_database(email):
-    """Search email in database."""
+    """Check if email exists email database."""
     response = notion.databases.query(database_id=database_id)
     for page in response["results"]:
         properties = page["properties"]
         if properties["E-mail"]["title"][0]["text"]["content"] == email:
-            return page["id"]  # Return page ID if email does exist
-    return None  # Return None if email does not exist
+            return True  # Email does exist in database
+    return None  # Email does not exist in database
+
+def is_company_in_sales_list(company):
+    """Check if company exists in the sales database."""
+    response = notion.databases.query(database_id=company_database_id)
+    for page in response["results"]:
+        properties = page["properties"]
+        if properties["Company"]["title"][0]["text"]["content"].lower() == company.lower():
+            return True  # Company does exist in database
+    return False  # Company does not exist in database
 
 def add_email_to_database(email, company=None, notes=None):
     """Add email to database."""
@@ -72,6 +82,12 @@ def main():
         else:
             print("🟢 Great! Email does not exist in the database. Please provide additional details.")
             company = input("Enter company name (optional):\n").strip()
+
+            # Check if company already exist in sales list
+            if company and is_company_in_sales_list(company):
+                print(f"🔴 The company '{company}' is already in the sales list. Email will not be added.")
+                return
+
             notes = input("Enter notes (optional):\n").strip()
             add_email_to_database(email, company, notes)
 
