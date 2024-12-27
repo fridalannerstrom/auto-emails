@@ -82,7 +82,7 @@ def update_email_notes(page_id):
         if action == "add":
             new_notes = input("Enter new notes to add:\n").strip()
             updated_notes = f"{current_notes} {new_notes}".strip()
-            print(f"🟢 Updated notes: {updated_notes}")
+            print(f"Updating notes...")
 
         elif action == "remove":
             if not current_notes:
@@ -91,12 +91,12 @@ def update_email_notes(page_id):
             print(f"Current notes: {current_notes}")
             remove_text = input("Enter the text you want to remove:\n").strip()
             updated_notes = current_notes.replace(remove_text, "").strip()
-            print(f"🟢 Updated notes: {updated_notes}")
+            print(f"Updating notes...")
 
         elif action == "replace":
             new_notes = input("Enter new notes to replace existing ones:\n").strip()
             updated_notes = new_notes
-            print(f"🟢 Updated notes: {updated_notes}")
+            print(f"Updating notes...")
 
         elif action == "skip":
             print("No changes made to notes.")
@@ -118,12 +118,17 @@ def update_email_notes(page_id):
     except Exception as e:
         print(f"🔴 Something went wrong during the notes update: {e}")
 
-VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
+VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"] # User can only select these statuses
 
 def update_email_status(page_id):
     """Update the status and latest contact date for a specific email."""
     try:
-        # Visa de tillåtna statusvärdena och be om en giltig status
+        # Get current status
+        page = notion.pages.retrieve(page_id=page_id)
+        current_status = page["properties"]["Status"]["status"]["name"]
+        print(f"Current status: {current_status}")
+
+        # Ask for new status
         new_status = None
         while not new_status:
             print(f"Enter the new status. Can only be: {', '.join(VALID_STATUSES)}")
@@ -135,9 +140,9 @@ def update_email_status(page_id):
                 print(f"🔴 Invalid status '{user_input}'. Please try again.")
 
         # Get the current date
-        current_date = datetime.now().strftime("%Y-%m-%d") 
+        current_date = datetime.now().strftime("%Y-%m-%d")
 
-        # Update database with new properties
+        # Update database
         notion.pages.update(
             page_id=page_id,
             properties={
@@ -147,7 +152,7 @@ def update_email_status(page_id):
         )
         print(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.")
 
-        # Ask to add or update notes
+        # Ask if user wants to add notes
         add_notes = input("Do you want to add or update notes? (yes/no): \n").strip().lower()
         if add_notes == "yes":
             update_email_notes(page_id)
