@@ -4,12 +4,14 @@
 
 import json
 from notion_client import Client
+import re # For email validation
+from datetime import datetime  # Import for current date
 
 # API-token from creds.json file
 with open("creds.json", "r") as file:
     creds = json.load(file)
 
-# set up client with API-token
+# Set up client with API-token
 notion = Client(auth=creds["NOTION_TOKEN"])
 
 # Database IDs
@@ -17,8 +19,9 @@ database_id = "168284e4604f8013a728d0aa102775aa"
 company_database_id = "168284e4604f80d7acfac51891eb0e3c"
 
 def is_valid_email(email):
-    """Check if email is valid"""
-    return "@" in email
+    """Check if email is valid."""
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return bool(re.match(pattern, email))
 
 def find_email_in_database(email):
     """Check if email exists email database."""
@@ -55,16 +58,16 @@ def add_email_to_database(email, company=None, notes=None):
         )
         print(f"🟢 Succes! '{email}' has been added to the database.")
     except Exception as e:
-        print(f"Something went wrong: {e}")
+        print(f"🔴 Something went wrong: {e}")
 
 def update_email_notes(page_id):
     """Update the notes for a specific email dynamically."""
     try:
-        # Hämta den nuvarande sidan
+        # Get the relevant page
         page = notion.pages.retrieve(page_id=page_id)
         current_notes = ""
 
-        # Hämta nuvarande anteckningar om de finns
+        # Get the current notes
         if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"]:
             current_notes = "".join(
                 [text["text"]["content"] for text in page["properties"]["Notes"]["rich_text"]]
@@ -73,13 +76,13 @@ def update_email_notes(page_id):
         else:
             print("No current notes found.")
 
-        # Fråga användaren vad de vill göra
+        # Ask user what to do
         action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower()
 
         if action == "add":
             new_notes = input("Enter new notes to add:\n").strip()
             updated_notes = f"{current_notes} {new_notes}".strip()
-            print(f"Updated notes: {updated_notes}")
+            print(f"🟢 Updated notes: {updated_notes}")
 
         elif action == "remove":
             if not current_notes:
@@ -88,22 +91,22 @@ def update_email_notes(page_id):
             print(f"Current notes: {current_notes}")
             remove_text = input("Enter the text you want to remove:\n").strip()
             updated_notes = current_notes.replace(remove_text, "").strip()
-            print(f"Updated notes: {updated_notes}")
+            print(f"🟢 Updated notes: {updated_notes}")
 
         elif action == "replace":
             new_notes = input("Enter new notes to replace existing ones:\n").strip()
             updated_notes = new_notes
-            print(f"Updated notes: {updated_notes}")
+            print(f"🟢 Updated notes: {updated_notes}")
 
         elif action == "skip":
             print("No changes made to notes.")
             return
 
         else:
-            print("Invalid choice. No changes made to notes.")
+            print("🔴 Invalid choice. No changes made to notes.")
             return
 
-        # Uppdatera anteckningarna i Notion
+        # Update notes
         notion.pages.update(
             page_id=page_id,
             properties={
@@ -114,8 +117,6 @@ def update_email_notes(page_id):
 
     except Exception as e:
         print(f"🔴 Something went wrong during the notes update: {e}")
-
-from datetime import datetime  # Import for current date
 
 VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
 
