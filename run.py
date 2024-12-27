@@ -29,8 +29,8 @@ def find_email_in_database(email):
     for page in response["results"]:
         properties = page["properties"]
         if properties["E-mail"]["title"][0]["text"]["content"] == email:
-            return page["id"]  # Email does exist in database
-    return None  # Email does not exist in database
+            return page["id"] 
+    return None  
 
 def is_company_in_sales_list(company):
     """Check if company exists in the sales database."""
@@ -38,8 +38,8 @@ def is_company_in_sales_list(company):
     for page in response["results"]:
         properties = page["properties"]
         if properties["Company"]["title"][0]["text"]["content"].lower() == company.lower():
-            return True  # Company does exist in database
-    return False  # Company does not exist in database
+            return True  
+    return False 
 
 def add_email_to_database(email, company=None, notes=None):
     """Add email to database."""
@@ -123,17 +123,19 @@ VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "No
 def update_email_status(page_id):
     """Update the status and latest contact date for a specific email."""
     try:
-        # Show the possible status options
-        print(f"Enter the new status. Can only be: {', '.join(VALID_STATUSES)}")
-        new_status = input("New status: \n").strip()
-
-        # Check if status is valid
-        if new_status not in VALID_STATUSES:
-            print(f"🔴 Invalid status '{new_status}'. Please use one of the valid statuses.")
-            return
+        # Visa de tillåtna statusvärdena och be om en giltig status
+        new_status = None
+        while not new_status:
+            print(f"Enter the new status. Can only be: {', '.join(VALID_STATUSES)}")
+            user_input = input("New status: \n").strip()
+            
+            if user_input in VALID_STATUSES:
+                new_status = user_input
+            else:
+                print(f"🔴 Invalid status '{user_input}'. Please try again.")
 
         # Get the current date
-        current_date = datetime.now().strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
+        current_date = datetime.now().strftime("%Y-%m-%d") 
 
         # Update database with new properties
         notion.pages.update(
@@ -172,6 +174,7 @@ def main():
     # Search for email in database
     page_id = find_email_in_database(email)
 
+    # Add email 
     if action == "add":
         if page_id:
             print(f"🔴 Email '{email}' already exists. You can not add it again.")
@@ -187,6 +190,7 @@ def main():
             notes = input("Enter notes (optional):\n").strip()
             add_email_to_database(email, company, notes)
 
+    # Update email
     elif action == "update":
         if page_id:
             print(f"🟢 Success! Found '{email}' in the database.")
