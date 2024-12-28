@@ -61,66 +61,30 @@ class Customer:
         self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
         print(f"🟢 Success! Customer '{email}' added to the database.")
 
-def update_email_notes(page_id):
-    """Update the notes for a specific email."""
-    try:
-        # Get the relevant page
-        page = notion.pages.retrieve(page_id=page_id)
-        current_notes = ""
+    def update_notes(self, page_id, action, content=None):
+        """Update the notes for a specific email."""
+        page = self.notion.pages.retrieve(page_id=page_id)
+        current_notes = "".join(
+            [text["text"]["content"] for text in page["properties"]["Notes"]["rich_text"]]
+        ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else ""
 
-        # Get the current notes
-        if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"]:
-            current_notes = "".join(
-                [text["text"]["content"] for text in page["properties"]["Notes"]["rich_text"]]
-            )
-            print(f"Current notes: {current_notes}")
+        if action == "add":
+            updated_notes = f"{current_notes} {content}".strip()
+        elif action == "replace":
+            updated_notes = content.strip()
+        elif action == "remove":
+            updated_notes = current_notes.replace(content, "").strip()
         else:
-            print("No current notes found.")
+            print("🔴 Invalid action. No changes made to notes.")
+            return
 
-        updated_notes = current_notes 
-        while True:
-            action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower()
-
-            if action == "add":
-                new_notes = input("Enter new notes to add:\n").strip()
-                updated_notes = f"{current_notes} {new_notes}".strip()
-                print(f"Updating notes...")
-                break
-
-            elif action == "remove":
-                if not current_notes:
-                    print("There are no notes to remove.")
-                    return
-                print(f"Current notes: {current_notes}")
-                remove_text = input("Enter the text you want to remove:\n").strip()
-                updated_notes = current_notes.replace(remove_text, "").strip()
-                print(f"Updating notes...")
-                break
-
-            elif action == "replace":
-                new_notes = input("Enter new notes to replace existing ones:\n").strip()
-                updated_notes = new_notes
-                print(f"Updating notes...")
-                break
-
-            elif action == "skip":
-                print("No changes made to notes.")
-                return
-
-            else:
-                print("🔴 Invalid choice. No changes made to notes.")
-
-        # Update notes
-        notion.pages.update(
+        self.notion.pages.update(
             page_id=page_id,
             properties={
                 "Notes": {"rich_text": [{"text": {"content": updated_notes}}]},
             },
         )
         print(f"🟢 Success! Notes updated to: {updated_notes}")
-
-    except Exception as e:
-        print(f"🔴 Something went wrong during the notes update: {e}")
 
     def update_status(self, page_id, new_status):
         """Update the status and latest contact date for a specific email."""
@@ -135,55 +99,63 @@ def update_email_notes(page_id):
         print(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.")
 
 def main():
-    while True:
-        # Ask user what they want to do
+    customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
+
+    while True: # Infinite loop to keep the program running
         action = input("Do you want to add or update email? (add/update):\n").strip().lower()
-
         if action not in ["add", "update"]:
-            print("🔴 Please choose 'add' or 'update'")
+            print("🔴 Invalid choice. Please choose 'add' or 'update'.")
             continue
 
-        # Ask for email
-        email = input("Enter email: \n").strip()
-
-        # Validate email
-        if not is_valid_email(email):
-            print(f"Email '{email}' is not valid. Please try again.")
+        email = input("Enter email:\n").strip()
+        if not customer_manager.is_valid_email(email):
+            print(f"🔴 Email '{email}' is not valid. Please try again.")
             continue
 
-        # Search for email in database
-        page_id = find_email_in_database(email)
-
-        # Add email 
         if action == "add":
-            if page_id:
-                print(f"🔴 Email '{email}' already exists. You can not add it again.")
+            if customer_manager.find_by_email(email):
+                print(f"🔴 Email '{email}' already exists in the database.")
                 continue
-            else:
-                print("🟢 Great! Email does not exist in the database. Please provide additional details.")
-                company = input("Enter company name (optional):\n").strip()
 
-                # Check if company already exist in sales list
-                if company and is_company_in_sales_list(company):
-                    print(f"🔴 The company '{company}' is already in the sales list. Email will not be added.")
-                    continue
+            company = input("Enter company name (optional):\n").strip()
+            if company and customer_manager.is_company_in_sales_list(company):
+                print(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.")
+                continue
 
-                notes = input("Enter notes (optional):\n").strip()
-                add_email_to_database(email, company, notes)
+            notes = input("Enter notes (optional):\n").strip()
+            customer_manager.create(email, company, notes)
 
-        # Update e-mail
         elif action == "update":
-            if page_id:
-                print(f"🟢 Success! Found '{email}' in the database.")
-                update = input("Do you want to update status or notes? (status/notes): \n").strip().lower()
-                if update == "status":
-                    update_email_status(page_id)
-                elif update == "notes":
-                    update_email_notes(page_id)
+            page = customer_manager.find_by_email(email)
+            if not page:
+                print(f"🔴 Email '{email}' not found in the database. Cannot update.")
+                continue
+
+            page_id = page["id"]
+            update_action = input("Do you want to update status or notes? (status/notes):\n").strip().lower()
+            if update_action == "status":
+                print(f"Current status: {page['properties']['Status']['status']['name']}")
+                new_status = None
+                while not new_status:
+                    print(f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}")
+                    new_status_input = input("New status:\n").strip()
+                    if new_status_input in VALID_STATUSES:
+                        new_status = new_status_input
+                    else:
+                        print(f"🔴 Invalid status '{new_status_input}'. Please try again.")
+                customer_manager.update_status(page_id, new_status)
+
+            elif update_action == "notes":
+                print(f"Current notes: {page['properties']['Notes']['rich_text']}")
+                action = input("What do you want to do with the notes? (add/remove/replace):\n").strip().lower()
+                if action in ["add", "replace", "remove"]:
+                    content = input("Enter the content:\n").strip()
+                    customer_manager.update_notes(page_id, action, content)
                 else:
-                    print("🔴 Invalid choice. Please choose 'status' or 'notes'.")
+                    print("🔴 Invalid choice for notes. Please try again.")
+
             else:
-                print(f"🔴 Email '{email}' is not in the database. Can not update.")
+                print("🔴 Invalid update choice. Please choose 'status' or 'notes'.")
 
 if __name__ == "__main__":
     main()
