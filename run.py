@@ -161,53 +161,55 @@ def update_email_status(page_id):
         print(f"🔴 Something went wrong during the update: {e}")
 
 def main():
-    # Ask user what they want to do
-    action = input("Do you want to add or update email? (add/update):\n").strip().lower()
+    while True:
+        # Ask user what they want to do
+        action = input("Do you want to add or update email? (add/update):\n").strip().lower()
 
-    if action not in ["add", "update"]:
-        print("Please choose 'add' or 'update'")
-        return
+        if action not in ["add", "update"]:
+            print("🔴 Please choose 'add' or 'update'")
+            continue
 
-    # Ask for email
-    email = input("Enter email: \n").strip()
+        # Ask for email
+        email = input("Enter email: \n").strip()
 
-    # Validate email
-    if not is_valid_email(email):
-        print(f"Email '{email}' is not valid. Please try again.")
-        return
+        # Validate email
+        if not is_valid_email(email):
+            print(f"Email '{email}' is not valid. Please try again.")
+            continue
 
-    # Search for email in database
-    page_id = find_email_in_database(email)
+        # Search for email in database
+        page_id = find_email_in_database(email)
 
-    # Add email 
-    if action == "add":
-        if page_id:
-            print(f"🔴 Email '{email}' already exists. You can not add it again.")
-        else:
-            print("🟢 Great! Email does not exist in the database. Please provide additional details.")
-            company = input("Enter company name (optional):\n").strip()
-
-            # Check if company already exist in sales list
-            if company and is_company_in_sales_list(company):
-                print(f"🔴 The company '{company}' is already in the sales list. Email will not be added.")
-                return
-
-            notes = input("Enter notes (optional):\n").strip()
-            add_email_to_database(email, company, notes)
-
-    # Update email
-    elif action == "update":
-        if page_id:
-            print(f"🟢 Success! Found '{email}' in the database.")
-            update = input("Do you want to update status or notes? (status/notes): \n").strip().lower()
-            if update == "status":
-                update_email_status(page_id)
-            elif update == "notes":
-                update_email_notes(page_id)
+        # Add email 
+        if action == "add":
+            if page_id:
+                print(f"🔴 Email '{email}' already exists. You can not add it again.")
+                continue
             else:
-                print("🔴 Invalid choice. Please choose 'status' or 'notes'.")
-        else:
-            print(f"🔴 Email '{email}' is not in the database. Can not update.")
+                print("🟢 Great! Email does not exist in the database. Please provide additional details.")
+                company = input("Enter company name (optional):\n").strip()
+
+                # Check if company already exist in sales list
+                if company and is_company_in_sales_list(company):
+                    print(f"🔴 The company '{company}' is already in the sales list. Email will not be added.")
+                    continue
+
+                notes = input("Enter notes (optional):\n").strip()
+                add_email_to_database(email, company, notes)
+
+        # Update e-mail
+        elif action == "update":
+            if page_id:
+                print(f"🟢 Success! Found '{email}' in the database.")
+                update = input("Do you want to update status or notes? (status/notes): \n").strip().lower()
+                if update == "status":
+                    update_email_status(page_id)
+                elif update == "notes":
+                    update_email_notes(page_id)
+                else:
+                    print("🔴 Invalid choice. Please choose 'status' or 'notes'.")
+            else:
+                print(f"🔴 Email '{email}' is not in the database. Can not update.")
 
 if __name__ == "__main__":
     main()
