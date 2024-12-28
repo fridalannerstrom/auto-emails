@@ -40,14 +40,13 @@ class Customer:
                 return page  # Return the full page object
         return None
 
-def is_company_in_sales_list(company):
-    """Check if company exists in the sales database."""
-    response = notion.databases.query(database_id=company_database_id)
-    for page in response["results"]:
-        properties = page["properties"]
-        if properties["Company"]["title"][0]["text"]["content"].lower() == company.lower():
-            return True  
-    return False 
+    def is_company_in_sales_list(self, company):
+        """Check if company exists in the sales database."""
+        response = self.notion.databases.query(database_id=self.company_database_id)
+        for page in response["results"]:
+            if page["properties"]["Company"]["title"][0]["text"]["content"].lower() == company.lower():
+                return True
+        return False
 
 def add_email_to_database(email, company=None, notes=None):
     """Add email to database."""
