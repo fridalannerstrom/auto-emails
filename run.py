@@ -10,11 +10,13 @@ with open("creds.json", "r") as file:
 # Set up client with API-token
 notion = Client(auth=creds["NOTION_TOKEN"])
 
-# Database IDs
-DATABASE_ID = "168284e4604f8013a728d0aa102775aa"
+# Database ID with potential customer emails
+DATABASE_ID = "168284e4604f8013a728d0aa102775aa" 
+
+# Database ID for current customers company
 COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
 
-# Possible statuses to choose from
+# Possible statuses to choose from in database
 VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
 
 # Import colors from colorama
