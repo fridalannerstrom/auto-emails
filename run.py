@@ -61,7 +61,7 @@ def add_email_to_database(email, company=None, notes=None):
         print(f"🔴 Something went wrong: {e}")
 
 def update_email_notes(page_id):
-    """Update the notes for a specific email dynamically."""
+    """Update the notes for a specific email."""
     try:
         # Get the relevant page
         page = notion.pages.retrieve(page_id=page_id)
@@ -76,35 +76,38 @@ def update_email_notes(page_id):
         else:
             print("No current notes found.")
 
-        # Ask user what to do
-        action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower()
+        updated_notes = current_notes 
+        while True:
+            action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower() # Ask user what to do
 
-        if action == "add":
-            new_notes = input("Enter new notes to add:\n").strip()
-            updated_notes = f"{current_notes} {new_notes}".strip()
-            print(f"Updating notes...")
+            if action == "add":
+                new_notes = input("Enter new notes to add:\n").strip()
+                updated_notes = f"{current_notes} {new_notes}".strip()
+                print(f"Updating notes...")
+                break
 
-        elif action == "remove":
-            if not current_notes:
-                print("There are no notes to remove.")
+            elif action == "remove":
+                if not current_notes:
+                    print("There are no notes to remove.")
+                    return
+                print(f"Current notes: {current_notes}")
+                remove_text = input("Enter the text you want to remove:\n").strip()
+                updated_notes = current_notes.replace(remove_text, "").strip()
+                print(f"Updating notes...")
+                break
+
+            elif action == "replace":
+                new_notes = input("Enter new notes to replace existing ones:\n").strip()
+                updated_notes = new_notes
+                print(f"Updating notes...")
+                break
+
+            elif action == "skip":
+                print("No changes made to notes.")
                 return
-            print(f"Current notes: {current_notes}")
-            remove_text = input("Enter the text you want to remove:\n").strip()
-            updated_notes = current_notes.replace(remove_text, "").strip()
-            print(f"Updating notes...")
 
-        elif action == "replace":
-            new_notes = input("Enter new notes to replace existing ones:\n").strip()
-            updated_notes = new_notes
-            print(f"Updating notes...")
-
-        elif action == "skip":
-            print("No changes made to notes.")
-            return
-
-        else:
-            print("🔴 Invalid choice. No changes made to notes.")
-            return
+            else:
+                print("🔴 Invalid choice. No changes made to notes.")
 
         # Update notes
         notion.pages.update(
