@@ -210,6 +210,12 @@ def main():
                                 break
                             else:
                                 print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                        break
+                    elif add_notes == "no":
+                        print(Fore.CYAN + "No notes were added or updated." + Style.RESET_ALL)
+                        break
+                    else:
+                        print(Fore.RED + "🔴 Invalid input. Please enter 'yes' or 'no'." + Style.RESET_ALL)
 
                 # Update notes
                 elif update_action == "notes":
