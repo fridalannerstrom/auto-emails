@@ -19,7 +19,9 @@ DATABASE_ID = "168284e4604f8013a728d0aa102775aa"
 COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
 
 # Set possible statuses to choose from
-VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"] 
+VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
+
+from colorama import Fore, Back, Style
 
 class Customer:
     def __init__(self, notion_client, database_id, company_database_id):
@@ -84,7 +86,7 @@ class Customer:
                 "Notes": {"rich_text": [{"text": {"content": updated_notes}}]},
             },
         )
-        print(f"🟢 Success! Notes updated to: {updated_notes}")
+        print(Fore.GREEN + f"🟢 Success! Notes updated to: {updated_notes}" + Style.RESET_ALL)
 
     def update_status(self, page_id, new_status):
         """Update the status and latest contact date for a specific email."""
@@ -101,15 +103,15 @@ class Customer:
 def main():
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
-    while True: # Infinite loop to keep the program running
+    while True: # Infinite loop to keep this running
         action = input("Do you want to add or update email? (add/update):\n").strip().lower()
         if action not in ["add", "update"]:
-            print("🔴 Invalid choice. Please choose 'add' or 'update'.")
+            print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
             continue
 
         email = input("Enter email:\n").strip()
         if not customer_manager.is_valid_email(email):
-            print(f"🔴 Email '{email}' is not valid. Please try again.")
+            print(Fore.RED + f"🔴 Email '{email}' is not valid. Please try again." + Style.RESET_ALL)
             continue
 
         if action == "add":
