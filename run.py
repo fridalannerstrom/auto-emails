@@ -19,7 +19,13 @@ DATABASE_ID = "168284e4604f8013a728d0aa102775aa"
 COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
 
 # Set possible statuses to choose from
-VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"] # User can only select these statuses
+VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"] 
+
+class Customer:
+    def __init__(self, notion_client, database_id, company_database_id):
+        self.notion = notion_client
+        self.database_id = database_id
+        self.company_database_id = company_database_id
 
 def is_valid_email(email):
     """Check if email is valid."""
