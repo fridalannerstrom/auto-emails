@@ -144,6 +144,8 @@ def main():
                 if not page:
                     print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
                     continue
+                else:
+                    print(Fore.GREEN + f"Good to go! '{email}' was found in the database." + Style.RESET_ALL)
 
                 # Find the current notes in database
                 current_notes = "".join(
