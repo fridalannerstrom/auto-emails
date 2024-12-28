@@ -122,45 +122,17 @@ def update_email_notes(page_id):
     except Exception as e:
         print(f"🔴 Something went wrong during the notes update: {e}")
 
-def update_email_status(page_id):
-    """Update the status and latest contact date for a specific email."""
-    try:
-        # Get current status
-        page = notion.pages.retrieve(page_id=page_id)
-        current_status = page["properties"]["Status"]["status"]["name"]
-        print(f"Current status: {current_status}")
-
-        # Ask for new status
-        new_status = None
-        while not new_status:
-            print(f"Enter the new status. Can only be: {', '.join(VALID_STATUSES)}")
-            user_input = input("New status: \n").strip()
-            
-            if user_input in VALID_STATUSES:
-                new_status = user_input
-            else:
-                print(f"🔴 Invalid status '{user_input}'. Please try again.")
-
-        # Get the current date
+    def update_status(self, page_id, new_status):
+        """Update the status and latest contact date for a specific email."""
         current_date = datetime.now().strftime("%Y-%m-%d")
-
-        # Update database
-        notion.pages.update(
+        self.notion.pages.update(
             page_id=page_id,
             properties={
-                "Status": {"status": {"name": new_status}},  
-                "Latest contact": {"date": {"start": current_date}}, 
+                "Status": {"status": {"name": new_status}},
+                "Latest contact": {"date": {"start": current_date}},
             },
         )
         print(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.")
-
-        # Ask if user wants to add notes
-        add_notes = input("Do you want to add or update notes? (yes/no): \n").strip().lower()
-        if add_notes == "yes":
-            update_email_notes(page_id)
-
-    except Exception as e:
-        print(f"🔴 Something went wrong during the update: {e}")
 
 def main():
     while True:
