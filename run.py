@@ -48,9 +48,8 @@ class Customer:
                 return True
         return False
 
-def add_email_to_database(email, company=None, notes=None):
-    """Add email to database."""
-    try:
+    def create(self, email, company=None, notes=None):
+        """Add a new customer to the database."""
         properties = {
             "E-mail": {"title": [{"text": {"content": email}}]},
         }
@@ -59,13 +58,8 @@ def add_email_to_database(email, company=None, notes=None):
         if notes:
             properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
         
-        notion.pages.create(
-            parent={"database_id": database_id},
-            properties=properties,
-        )
-        print(f"🟢 Succes! '{email}' has been added to the database.")
-    except Exception as e:
-        print(f"🔴 Something went wrong: {e}")
+        self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
+        print(f"🟢 Success! Customer '{email}' added to the database.")
 
 def update_email_notes(page_id):
     """Update the notes for a specific email."""
