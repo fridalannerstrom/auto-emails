@@ -122,12 +122,16 @@ def main():
                 if customer_manager.find_by_email(email):
                     print(Fore.RED + f"🔴 Email '{email}' already exists in the database. Please enter a new email." + Style.RESET_ALL)
                     continue
+                else:
+                    print(Fore.GREEN + f"Good to go! '{email}' does not exist in the database." + Style.RESET_ALL)
 
                 # Ask for company and check company sales list
                 company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
                 if company and customer_manager.is_company_in_sales_list(company):
                     print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
                     continue
+                else:
+                    print(Fore.GREEN + f"Good to go! '{company}' is not in the sales list." + Style.RESET_ALL)
 
                 # Ask for notes and add customer
                 notes = input(Fore.CYAN + "Enter notes (optional):\n" + Style.RESET_ALL).strip()
@@ -181,11 +185,11 @@ def main():
                     print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
                     note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
                     if note_action in ["add", "replace", "remove"]:
-                        content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
+                        content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
                         customer_manager.update_notes(page_id, note_action, content)
                     else:
                         print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
-                        
+
                 else:
                     print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
                 break
