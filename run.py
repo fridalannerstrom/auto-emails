@@ -181,7 +181,7 @@ def main():
                 # Get the current notes in database
                 current_notes = "".join(
                     [text["plain_text"] for text in page["properties"]["Notes"]["rich_text"]]
-                    ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes available."
+                    ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes."
 
                 # Ask for update notes or status
                 while True:
