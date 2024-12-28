@@ -145,7 +145,7 @@ def main():
                 page_id = page["id"]
                 update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
                 if update_action == "status":
-                    print(Fore.CYAN + f"Current status: {page['properties']['Status']['status']['name']}" + Style.RESET_ALL)
+                    print(f"Current status: {page['properties']['Status']['status']['name']}")
                     new_status = None
                     while not new_status:
                         print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
@@ -156,8 +156,16 @@ def main():
                             print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
                     customer_manager.update_status(page_id, new_status)
 
+                    add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
+                    if add_notes == "yes":
+                        while True:
+                            print("Add notes function here")
+                            break
+                        else:
+                            print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+
                 elif update_action == "notes":
-                    print(Fore.CYAN + f"Current notes: {page['properties']['Notes']['rich_text']}" + Style.RESET_ALL)
+                    print(f"Current notes: {page['properties']['Notes']['rich_text']}")
                     note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
                     if note_action in ["add", "replace", "remove"]:
                         content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
