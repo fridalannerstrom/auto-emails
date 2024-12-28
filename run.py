@@ -140,12 +140,7 @@ def main():
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
     while True:  # Infinite loop to keep this running
-
-        # Ask user to add or update email
-        action = input(Fore.CYAN + "Do you want to add or update email? (add/update):\n" + Style.RESET_ALL).strip().lower()
-        if action not in ["add", "update"]:
-            print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
-            continue
+        action = customer_manager.get_valid_input("Do you want to add or update email? (add/update):\n", ["add", "update"])
 
         while True:  # Loop for email input
             email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
