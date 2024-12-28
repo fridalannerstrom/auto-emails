@@ -104,12 +104,12 @@ def main():
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
     while True: # Infinite loop to keep this running
-        action = input("Do you want to add or update email? (add/update):\n").strip().lower()
+        action = input(Fore.CYAN + "Do you want to add or update email? (add/update):\n" + Style.RESET_ALL).strip().lower()
         if action not in ["add", "update"]:
             print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
             continue
 
-        email = input("Enter email:\n").strip()
+        email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
         if not customer_manager.is_valid_email(email):
             print(Fore.RED + f"🔴 Email '{email}' is not valid. Please try again." + Style.RESET_ALL)
             continue
@@ -119,12 +119,12 @@ def main():
                 print(Fore.RED + f"🔴 Email '{email}' already exists in the database." + Style.RESET_ALL)
                 continue
 
-            company = input("Enter company name (optional):\n").strip()
+            company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
             if company and customer_manager.is_company_in_sales_list(company):
                 print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
                 continue
 
-            notes = input("Enter notes (optional):\n").strip()
+            notes = input(Fore.CYAN + "Enter notes (optional):\n" + Style.RESET_ALL).strip()
             customer_manager.create(email, company, notes)
 
         elif action == "update":
@@ -134,13 +134,13 @@ def main():
                 continue
 
             page_id = page["id"]
-            update_action = input("Do you want to update status or notes? (status/notes):\n").strip().lower()
+            update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
             if update_action == "status":
                 print(f"Current status: {page['properties']['Status']['status']['name']}")
                 new_status = None
                 while not new_status:
-                    print(f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}")
-                    new_status_input = input("New status:\n").strip()
+                    print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
+                    new_status_input = input(Fore.CYAN + "New status:\n" + Style.RESET_ALL).strip()
                     if new_status_input in VALID_STATUSES:
                         new_status = new_status_input
                     else:
@@ -149,9 +149,9 @@ def main():
 
             elif update_action == "notes":
                 print(f"Current notes: {page['properties']['Notes']['rich_text']}")
-                action = input("What do you want to do with the notes? (add/remove/replace):\n").strip().lower()
+                action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
                 if action in ["add", "replace", "remove"]:
-                    content = input("Enter the content:\n").strip()
+                    content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
                     customer_manager.update_notes(page_id, action, content)
                 else:
                     print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
