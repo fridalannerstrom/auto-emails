@@ -137,16 +137,20 @@ def main():
             elif action == "update":
                 # Check if email is in database
                 page = customer_manager.find_by_email(email)
-                current_notes = "".join(
-                    [text["plain_text"] for text in page["properties"]["Notes"]["rich_text"]]
-                    ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes available."
                 if not page:
                     print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
                     continue
 
+                # Find the current notes in database
+                current_notes = "".join(
+                    [text["plain_text"] for text in page["properties"]["Notes"]["rich_text"]]
+                    ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes available."
+
                 # Ask for update notes or status
                 page_id = page["id"]
                 update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
+
+                # Update status
                 if update_action == "status":
                     print(Fore.CYAN + f"Current status: {page['properties']['Status']['status']['name']}" + Style.RESET_ALL)
                     new_status = None
@@ -159,6 +163,7 @@ def main():
                             print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
                     customer_manager.update_status(page_id, new_status)
 
+                    # Add notes after status update
                     add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
                     if add_notes == "yes":
                         while True:
@@ -171,6 +176,7 @@ def main():
                         else:
                             print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
 
+                # Update notes
                 elif update_action == "notes":
                     print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
                     note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
@@ -179,10 +185,10 @@ def main():
                         customer_manager.update_notes(page_id, note_action, content)
                     else:
                         print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
-
+                        
                 else:
                     print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
-                break  
+                break
 
 
 if __name__ == "__main__":
