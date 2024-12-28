@@ -32,14 +32,13 @@ class Customer:
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         return bool(re.match(pattern, email))
 
-def find_email_in_database(email):
-    """Check if email exists email database."""
-    response = notion.databases.query(database_id=database_id)
-    for page in response["results"]:
-        properties = page["properties"]
-        if properties["E-mail"]["title"][0]["text"]["content"] == email:
-            return page["id"] 
-    return None  
+    def find_by_email(self, email):
+        """Find a customer by email in the database."""
+        response = self.notion.databases.query(database_id=self.database_id)
+        for page in response["results"]:
+            if page["properties"]["E-mail"]["title"][0]["text"]["content"].lower() == email.lower():
+                return page  # Return the full page object
+        return None
 
 def is_company_in_sales_list(company):
     """Check if company exists in the sales database."""
