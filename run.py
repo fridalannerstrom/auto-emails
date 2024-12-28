@@ -109,39 +109,39 @@ def main():
             print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
             continue
 
-        while True:  # Loop för att hantera e-postinmatning
+        while True:  # Loop for email input
             email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
 
-            # Kontrollera om e-posten är giltig
+            # Check if email is valid
             if not customer_manager.is_valid_email(email):
                 print(Fore.RED + f"🔴 Email '{email}' is not valid. Please try again." + Style.RESET_ALL)
                 continue
 
             if action == "add":
-                # Kontrollera om e-posten redan finns i databasen
+                # Check if email is in database
                 if customer_manager.find_by_email(email):
                     print(Fore.RED + f"🔴 Email '{email}' already exists in the database. Please enter a new email." + Style.RESET_ALL)
                     continue
 
-                # Fråga efter företagsnamn och kontrollera om det redan finns i sales list
+                # Ask for company and check company sales list
                 company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
                 if company and customer_manager.is_company_in_sales_list(company):
                     print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
                     continue
 
-                # Fråga efter anteckningar och lägg till e-post
+                # Ask for notes and add customer
                 notes = input(Fore.CYAN + "Enter notes (optional):\n" + Style.RESET_ALL).strip()
                 customer_manager.create(email, company, notes)
-                break  # Avsluta e-postloopen om allt är korrekt och e-posten har lagts till
+                break
 
             elif action == "update":
-                # Kontrollera om e-posten finns i databasen
+                # Check if email is in database
                 page = customer_manager.find_by_email(email)
                 if not page:
                     print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
                     continue
 
-                # Gå vidare till uppdatering av status eller anteckningar
+                # Ask for update notes or status
                 page_id = page["id"]
                 update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
                 if update_action == "status":
@@ -167,7 +167,7 @@ def main():
 
                 else:
                     print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
-                break  # Avsluta e-postloopen om uppdateringen är klar
+                break  
 
 
 if __name__ == "__main__":
