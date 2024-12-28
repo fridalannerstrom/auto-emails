@@ -27,10 +27,10 @@ class Customer:
         self.database_id = database_id
         self.company_database_id = company_database_id
 
-def is_valid_email(email):
-    """Check if email is valid."""
-    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-    return bool(re.match(pattern, email))
+    def is_valid_email(self, email):
+        """Check if email is valid."""
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        return bool(re.match(pattern, email))
 
 def find_email_in_database(email):
     """Check if email exists email database."""
