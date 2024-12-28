@@ -123,6 +123,15 @@ class Customer:
         )
         print(Fore.GREEN + f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'." + Style.RESET_ALL)
 
+    def get_valid_input(self, prompt, valid_options):
+        while True:
+            user_input = input(prompt).strip().lower()
+            if user_input in valid_options:
+                return user_input
+            else:
+                print(f"{', '.join(valid_options)}.")
+
+
 def main():
     """
     Main function to manage customer data in the Notion database.
