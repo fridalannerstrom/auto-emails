@@ -145,7 +145,7 @@ def main():
                 page_id = page["id"]
                 update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
                 if update_action == "status":
-                    print(f"Current status: {page['properties']['Status']['status']['name']}")
+                    print(Fore.CYAN + f"Current status: {page['properties']['Status']['status']['name']}" + Style.RESET_ALL)
                     new_status = None
                     while not new_status:
                         print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
@@ -157,7 +157,7 @@ def main():
                     customer_manager.update_status(page_id, new_status)
 
                 elif update_action == "notes":
-                    print(f"Current notes: {page['properties']['Notes']['rich_text']}")
+                    print(Fore.CYAN + f"Current notes: {page['properties']['Notes']['rich_text']}" + Style.RESET_ALL)
                     note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
                     if note_action in ["add", "replace", "remove"]:
                         content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
