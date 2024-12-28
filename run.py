@@ -18,24 +18,43 @@ notion = Client(auth=creds["NOTION_TOKEN"])
 DATABASE_ID = "168284e4604f8013a728d0aa102775aa"
 COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
 
-# Set possible statuses to choose from
+# Possible statuses to choose from
 VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
 
+# Import colors from colorama
 from colorama import Fore, Back, Style
 
 class Customer:
+    """
+    This class manages customer data stored in the Notion database.
+
+    Attributes:
+        E-mail (str): The customer's email address.
+        Company (str): The name of the company where the customer works (optional).
+        Status (str): The status of the sales interaction (e.g., 'Email sent', 'Not sent', 'Meeting booked').
+        Latest contact (str): The date of the most recent contact with the customer via email.
+        Notes (str): Additional notes or comments related to the customer.
+    """
+
     def __init__(self, notion_client, database_id, company_database_id):
+        """
+        Set the Customer Class with Notion client and database IDs
+        """
         self.notion = notion_client
         self.database_id = database_id
         self.company_database_id = company_database_id
 
     def is_valid_email(self, email):
-        """Check if email is valid."""
+        """
+        Validate the format of an email address.
+        """
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         return bool(re.match(pattern, email))
 
     def find_by_email(self, email):
-        """Find a customer by email in the database."""
+        """
+        Search for a customer in the email database by their email.
+        """
         response = self.notion.databases.query(database_id=self.database_id)
         for page in response["results"]:
             if page["properties"]["E-mail"]["title"][0]["text"]["content"].lower() == email.lower():
@@ -43,7 +62,9 @@ class Customer:
         return None
 
     def is_company_in_sales_list(self, company):
-        """Check if company exists in the sales database."""
+        """
+        Search for company in the current company sales list.
+        """
         response = self.notion.databases.query(database_id=self.company_database_id)
         for page in response["results"]:
             if page["properties"]["Company"]["title"][0]["text"]["content"].lower() == company.lower():
@@ -51,7 +72,9 @@ class Customer:
         return False
 
     def create(self, email, company=None, notes=None):
-        """Add a new customer to the database."""
+        """
+        Add a new customer to the database.
+        """
         properties = {
             "E-mail": {"title": [{"text": {"content": email}}]},
         }
@@ -64,7 +87,9 @@ class Customer:
         print(Fore.GREEN + f"🟢 Success! Customer '{email}' added to the database." + Style.RESET_ALL)
 
     def update_notes(self, page_id, action, content=None):
-        """Update the notes for a specific email."""
+        """
+        Update the notes for a specific customer.
+        """
         page = self.notion.pages.retrieve(page_id=page_id)
         current_notes = "".join(
             [text["text"]["content"] for text in page["properties"]["Notes"]["rich_text"]]
@@ -87,7 +112,9 @@ class Customer:
         print(Fore.GREEN + f"🟢 Success! Notes updated to: {updated_notes}" + Style.RESET_ALL)
 
     def update_status(self, page_id, new_status):
-        """Update the status and latest contact date for a specific email."""
+        """
+        Update the status and latest contact date for a customer.
+        """
         current_date = datetime.now().strftime("%Y-%m-%d")
         self.notion.pages.update(
             page_id=page_id,
@@ -99,9 +126,15 @@ class Customer:
         print(Fore.GREEN + f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'." + Style.RESET_ALL)
 
 def main():
+    """
+    Main function to manage customer data in the Notion database.
+    """
+
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
     while True:  # Infinite loop to keep this running
+
+        # Ask user to add or update email
         action = input(Fore.CYAN + "Do you want to add or update email? (add/update):\n" + Style.RESET_ALL).strip().lower()
         if action not in ["add", "update"]:
             print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
