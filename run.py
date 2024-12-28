@@ -137,6 +137,9 @@ def main():
             elif action == "update":
                 # Check if email is in database
                 page = customer_manager.find_by_email(email)
+                current_notes = "".join(
+                    [text["plain_text"] for text in page["properties"]["Notes"]["rich_text"]]
+                    ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes available."
                 if not page:
                     print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
                     continue
@@ -159,7 +162,8 @@ def main():
                     add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
                     if add_notes == "yes":
                         while True:
-                            note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
+                            note_action = print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
+                            input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
                             if note_action in ["add", "replace", "remove"]:
                                 content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
                                 customer_manager.update_notes(page_id, note_action, content)
@@ -168,7 +172,7 @@ def main():
                             print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
 
                 elif update_action == "notes":
-                    print(f"Current notes: {page['properties']['Notes']['rich_text']}")
+                    print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
                     note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
                     if note_action in ["add", "replace", "remove"]:
                         content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
