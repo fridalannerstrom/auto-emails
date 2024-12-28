@@ -170,6 +170,8 @@ def main():
             elif action == "update":
                 # Check if email is in database
                 page = customer_manager.find_by_email(email)
+                page_id = page["id"]
+
                 if not page:
                     print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
                     continue
@@ -182,55 +184,59 @@ def main():
                     ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes available."
 
                 # Ask for update notes or status
-                page_id = page["id"]
-                update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
+                while True:
+                    update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
 
-                # Update status
-                if update_action == "status":
-                    print(Fore.CYAN + f"Current status: {page['properties']['Status']['status']['name']}" + Style.RESET_ALL)
-                    new_status = None
-                    while not new_status:
-                        print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
-                        new_status_input = input(Fore.CYAN + "New status:\n" + Style.RESET_ALL).strip()
-                        if new_status_input in VALID_STATUSES:
-                            new_status = new_status_input
-                        else:
-                            print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
-                    customer_manager.update_status(page_id, new_status)
+                    # Update status
+                    if update_action == "status":
+                        print(Fore.CYAN + f"Current status: {page['properties']['Status']['status']['name']}" + Style.RESET_ALL)
+                        new_status = None
+                        while not new_status:
+                            print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
+                            new_status_input = input(Fore.CYAN + "New status:\n" + Style.RESET_ALL).strip()
+                            if new_status_input in VALID_STATUSES:
+                                new_status = new_status_input
+                            else:
+                                print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
+                        customer_manager.update_status(page_id, new_status)
 
-                    # Add notes after status update
-                    while True:
-                        add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
-                        if add_notes == "yes":
-                            while True:
-                                print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
-                                note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
-                                if note_action in ["add", "replace"]:
-                                    content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
-                                    customer_manager.update_notes(page_id, note_action, content)
-                                    break
-                                else:
-                                    print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
-                            break
-                        elif add_notes == "no":
-                            print(Fore.CYAN + "No notes were added or updated." + Style.RESET_ALL)
-                            break
-                        else:
-                            print(Fore.RED + "🔴 Invalid input. Please enter 'yes' or 'no'." + Style.RESET_ALL)
+                        # Add notes after status update
+                        while True:
+                            add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
+                            if add_notes == "yes":
+                                while True:
+                                    print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
+                                    note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                                    if note_action in ["add", "replace"]:
+                                        content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
+                                        customer_manager.update_notes(page_id, note_action, content)
+                                        break
+                                    else:
+                                        print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                                break
+                            elif add_notes == "no":
+                                print(Fore.CYAN + "No notes were added or updated." + Style.RESET_ALL)
+                                break
+                            else:
+                                print(Fore.RED + "🔴 Invalid input. Please enter 'yes' or 'no'." + Style.RESET_ALL)
+                        break
 
-                # Update notes
-                elif update_action == "notes":
-                    print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
-                    note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
-                    if note_action in ["add", "replace"]:
-                        content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
-                        customer_manager.update_notes(page_id, note_action, content)
+                    # Update notes
+                    elif update_action == "notes":
+                        print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
+                        note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                        while not note_action:
+                            note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                            if note_action in ["add", "replace"]:
+                                content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
+                                customer_manager.update_notes(page_id, note_action, content)
+                            else:
+                                print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                                note_action = None  # Reset note_action to stay in the loop
+                        break
+
                     else:
-                        print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
-
-                else:
-                    print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
-                break
+                        print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
 
 
 if __name__ == "__main__":
