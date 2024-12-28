@@ -103,61 +103,72 @@ class Customer:
 def main():
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
-    while True: # Infinite loop to keep this running
+    while True:  # Infinite loop to keep this running
         action = input(Fore.CYAN + "Do you want to add or update email? (add/update):\n" + Style.RESET_ALL).strip().lower()
         if action not in ["add", "update"]:
             print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
             continue
 
-        email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
-        if not customer_manager.is_valid_email(email):
-            print(Fore.RED + f"🔴 Email '{email}' is not valid. Please try again." + Style.RESET_ALL)
-            continue
+        while True:  # Loop för att hantera e-postinmatning
+            email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
 
-        if action == "add":
-            if customer_manager.find_by_email(email):
-                print(Fore.RED + f"🔴 Email '{email}' already exists in the database." + Style.RESET_ALL)
+            # Kontrollera om e-posten är giltig
+            if not customer_manager.is_valid_email(email):
+                print(Fore.RED + f"🔴 Email '{email}' is not valid. Please try again." + Style.RESET_ALL)
                 continue
 
-            company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
-            if company and customer_manager.is_company_in_sales_list(company):
-                print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
-                continue
+            if action == "add":
+                # Kontrollera om e-posten redan finns i databasen
+                if customer_manager.find_by_email(email):
+                    print(Fore.RED + f"🔴 Email '{email}' already exists in the database. Please enter a new email." + Style.RESET_ALL)
+                    continue
 
-            notes = input(Fore.CYAN + "Enter notes (optional):\n" + Style.RESET_ALL).strip()
-            customer_manager.create(email, company, notes)
+                # Fråga efter företagsnamn och kontrollera om det redan finns i sales list
+                company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
+                if company and customer_manager.is_company_in_sales_list(company):
+                    print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
+                    continue
 
-        elif action == "update":
-            page = customer_manager.find_by_email(email)
-            if not page:
-                print(Fore.RED + f"🔴 Email '{email}' not found in the database. Cannot update." + Style.RESET_ALL)
-                continue
+                # Fråga efter anteckningar och lägg till e-post
+                notes = input(Fore.CYAN + "Enter notes (optional):\n" + Style.RESET_ALL).strip()
+                customer_manager.create(email, company, notes)
+                break  # Avsluta e-postloopen om allt är korrekt och e-posten har lagts till
 
-            page_id = page["id"]
-            update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
-            if update_action == "status":
-                print(f"Current status: {page['properties']['Status']['status']['name']}")
-                new_status = None
-                while not new_status:
-                    print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
-                    new_status_input = input(Fore.CYAN + "New status:\n" + Style.RESET_ALL).strip()
-                    if new_status_input in VALID_STATUSES:
-                        new_status = new_status_input
+            elif action == "update":
+                # Kontrollera om e-posten finns i databasen
+                page = customer_manager.find_by_email(email)
+                if not page:
+                    print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
+                    continue
+
+                # Gå vidare till uppdatering av status eller anteckningar
+                page_id = page["id"]
+                update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
+                if update_action == "status":
+                    print(f"Current status: {page['properties']['Status']['status']['name']}")
+                    new_status = None
+                    while not new_status:
+                        print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
+                        new_status_input = input(Fore.CYAN + "New status:\n" + Style.RESET_ALL).strip()
+                        if new_status_input in VALID_STATUSES:
+                            new_status = new_status_input
+                        else:
+                            print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
+                    customer_manager.update_status(page_id, new_status)
+
+                elif update_action == "notes":
+                    print(f"Current notes: {page['properties']['Notes']['rich_text']}")
+                    note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
+                    if note_action in ["add", "replace", "remove"]:
+                        content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
+                        customer_manager.update_notes(page_id, note_action, content)
                     else:
-                        print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
-                customer_manager.update_status(page_id, new_status)
+                        print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
 
-            elif update_action == "notes":
-                print(f"Current notes: {page['properties']['Notes']['rich_text']}")
-                action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
-                if action in ["add", "replace", "remove"]:
-                    content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
-                    customer_manager.update_notes(page_id, action, content)
                 else:
-                    print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                    print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
+                break  # Avsluta e-postloopen om uppdateringen är klar
 
-            else:
-                print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
 
 if __name__ == "__main__":
     main()
