@@ -1,2 +1,2 @@
+colorama==0.4.6
 notion-client==2.3.0
-colorama
