@@ -61,7 +61,7 @@ class Customer:
             properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
         
         self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
-        print(f"🟢 Success! Customer '{email}' added to the database.")
+        print(Fore.GREEN + f"🟢 Success! Customer '{email}' added to the database." + Style.RESET_ALL)
 
     def update_notes(self, page_id, action, content=None):
         """Update the notes for a specific email."""
@@ -77,7 +77,7 @@ class Customer:
         elif action == "remove":
             updated_notes = current_notes.replace(content, "").strip()
         else:
-            print("🔴 Invalid action. No changes made to notes.")
+            print(Fore.RED + "🔴 Invalid action. No changes made to notes." + Style.RESET_ALL)
             return
 
         self.notion.pages.update(
@@ -98,7 +98,7 @@ class Customer:
                 "Latest contact": {"date": {"start": current_date}},
             },
         )
-        print(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.")
+        print(Fore.GREEN + f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'." + Style.RESET_ALL)
 
 def main():
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
@@ -116,12 +116,12 @@ def main():
 
         if action == "add":
             if customer_manager.find_by_email(email):
-                print(f"🔴 Email '{email}' already exists in the database.")
+                print(Fore.RED + f"🔴 Email '{email}' already exists in the database." + Style.RESET_ALL)
                 continue
 
             company = input("Enter company name (optional):\n").strip()
             if company and customer_manager.is_company_in_sales_list(company):
-                print(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.")
+                print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
                 continue
 
             notes = input("Enter notes (optional):\n").strip()
@@ -130,7 +130,7 @@ def main():
         elif action == "update":
             page = customer_manager.find_by_email(email)
             if not page:
-                print(f"🔴 Email '{email}' not found in the database. Cannot update.")
+                print(Fore.RED + f"🔴 Email '{email}' not found in the database. Cannot update." + Style.RESET_ALL)
                 continue
 
             page_id = page["id"]
@@ -144,7 +144,7 @@ def main():
                     if new_status_input in VALID_STATUSES:
                         new_status = new_status_input
                     else:
-                        print(f"🔴 Invalid status '{new_status_input}'. Please try again.")
+                        print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
                 customer_manager.update_status(page_id, new_status)
 
             elif update_action == "notes":
@@ -154,10 +154,10 @@ def main():
                     content = input("Enter the content:\n").strip()
                     customer_manager.update_notes(page_id, action, content)
                 else:
-                    print("🔴 Invalid choice for notes. Please try again.")
+                    print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
 
             else:
-                print("🔴 Invalid update choice. Please choose 'status' or 'notes'.")
+                print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
 
 if __name__ == "__main__":
     main()
