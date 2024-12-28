@@ -233,6 +233,7 @@ def main():
                             if note_action in ["add", "replace"]:
                                 content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
                                 customer_manager.update_notes(page_id, note_action, content)
+                                main()
                                 break
                             else:
                                 print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
