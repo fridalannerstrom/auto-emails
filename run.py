@@ -159,8 +159,11 @@ def main():
                     add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
                     if add_notes == "yes":
                         while True:
-                            print("Add notes function here")
-                            break
+                            note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
+                            if note_action in ["add", "replace", "remove"]:
+                                content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
+                                customer_manager.update_notes(page_id, note_action, content)
+                                break
                         else:
                             print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
 
