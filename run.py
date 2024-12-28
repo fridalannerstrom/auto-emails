@@ -74,8 +74,6 @@ class Customer:
             updated_notes = f"{current_notes} {content}".strip()
         elif action == "replace":
             updated_notes = content.strip()
-        elif action == "remove":
-            updated_notes = current_notes.replace(content, "").strip()
         else:
             print(Fore.RED + "🔴 Invalid action. No changes made to notes." + Style.RESET_ALL)
             return
@@ -147,7 +145,7 @@ def main():
                 else:
                     print(Fore.GREEN + f"Good to go! '{email}' was found in the database." + Style.RESET_ALL)
 
-                # Find the current notes in database
+                # Get the current notes in database
                 current_notes = "".join(
                     [text["plain_text"] for text in page["properties"]["Notes"]["rich_text"]]
                     ) if "Notes" in page["properties"] and page["properties"]["Notes"]["rich_text"] else "No notes available."
@@ -173,20 +171,20 @@ def main():
                     add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
                     if add_notes == "yes":
                         while True:
-                            note_action = print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
-                            input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
-                            if note_action in ["add", "replace", "remove"]:
-                                content = input(Fore.CYAN + "Enter the content:\n" + Style.RESET_ALL).strip()
+                            print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
+                            note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                            if note_action in ["add", "replace"]:
+                                content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
                                 customer_manager.update_notes(page_id, note_action, content)
                                 break
-                        else:
-                            print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                            else:
+                                print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
 
                 # Update notes
                 elif update_action == "notes":
                     print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
-                    note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/remove/replace):\n" + Style.RESET_ALL).strip().lower()
-                    if note_action in ["add", "replace", "remove"]:
+                    note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                    if note_action in ["add", "replace"]:
                         content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
                         customer_manager.update_notes(page_id, note_action, content)
                     else:
