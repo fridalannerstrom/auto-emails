@@ -210,6 +210,7 @@ def main():
                                     if note_action in ["add", "replace"]:
                                         content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
                                         customer_manager.update_notes(page_id, note_action, content)
+                                        main()
                                         break
                                     else:
                                         print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
@@ -225,12 +226,14 @@ def main():
                     # Update notes
                     elif update_action == "notes":
                         print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
-                        note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
-                        while not note_action:
+
+                        while True: 
                             note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+
                             if note_action in ["add", "replace"]:
                                 content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
                                 customer_manager.update_notes(page_id, note_action, content)
+                                break
                             else:
                                 print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
                                 note_action = None  # Reset note_action to stay in the loop
