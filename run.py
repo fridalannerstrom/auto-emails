@@ -15,8 +15,11 @@ with open("creds.json", "r") as file:
 notion = Client(auth=creds["NOTION_TOKEN"])
 
 # Database IDs
-database_id = "168284e4604f8013a728d0aa102775aa"
-company_database_id = "168284e4604f80d7acfac51891eb0e3c"
+DATABASE_ID = "168284e4604f8013a728d0aa102775aa"
+COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
+
+# Set possible statuses to choose from
+VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"] # User can only select these statuses
 
 def is_valid_email(email):
     """Check if email is valid."""
@@ -78,7 +81,7 @@ def update_email_notes(page_id):
 
         updated_notes = current_notes 
         while True:
-            action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower() # Ask user what to do
+            action = input("What do you want to do with the notes? (add/remove/replace/skip):\n").strip().lower()
 
             if action == "add":
                 new_notes = input("Enter new notes to add:\n").strip()
@@ -120,8 +123,6 @@ def update_email_notes(page_id):
 
     except Exception as e:
         print(f"🔴 Something went wrong during the notes update: {e}")
-
-VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"] # User can only select these statuses
 
 def update_email_status(page_id):
     """Update the status and latest contact date for a specific email."""
