@@ -123,6 +123,21 @@ class Customer:
         )
         print(Fore.GREEN + f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'." + Style.RESET_ALL)
 
+def format_text(text, color="cyan"):
+    """
+    Format text with bold style and specified color.
+    """
+    colors = {
+    "cyan": Fore.CYAN,
+    "red": Fore.RED,
+    "green": Fore.GREEN
+    }
+
+    selected_color = colors.get(color.lower(), Fore.RESET) 
+    bold_prefix = "\033[1m"  
+    reset_suffix = Style.RESET_ALL + "\033[0m"  
+    return f"{bold_prefix}{selected_color}{text}{reset_suffix}"
+
 def main():
     """
     Main function to manage customer data in the Notion database.
@@ -133,7 +148,7 @@ def main():
     while True:  # Infinite loop to keep this running
 
         # Ask user to add or update email
-        action = input("\033[1m" + Fore.CYAN + "Let's get started! Do you want to add or update email? (add/update):\n" + Style.RESET_ALL + "\033[0m").strip().lower()
+        action = input(format_text("Let's get started! Do you want to add or update email? (add/update):\n", color="cyan")).strip().lower()
         if action not in ["add", "update"]:
             print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
             continue
