@@ -133,7 +133,7 @@ def main():
     while True:  # Infinite loop to keep this running
 
         # Ask user to add or update email
-        action = input(Fore.CYAN + "Let's get started! Do you want to add or update email? (add/update):\n" + Style.RESET_ALL).strip().lower()
+        action = input("\033[1m" + Fore.CYAN + "Let's get started! Do you want to add or update email? (add/update):\n" + Style.RESET_ALL + "\033[0m").strip().lower()
         if action not in ["add", "update"]:
             print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
             continue
