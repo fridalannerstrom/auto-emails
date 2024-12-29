@@ -123,15 +123,6 @@ class Customer:
         )
         print(Fore.GREEN + f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'." + Style.RESET_ALL)
 
-    def get_valid_input(self, prompt, valid_options):
-        while True:
-            user_input = input(prompt).strip().lower()
-            if user_input in valid_options:
-                return user_input
-            else:
-                print(f"{', '.join(valid_options)}.")
-
-
 def main():
     """
     Main function to manage customer data in the Notion database.
@@ -140,7 +131,12 @@ def main():
     customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
     while True:  # Infinite loop to keep this running
-        action = customer_manager.get_valid_input("Do you want to add or update email? (add/update):\n", ["add", "update"])
+
+        # Ask user to add or update email
+        action = input(Fore.CYAN + "Let's get started! Do you want to add or update email? (add/update):\n" + Style.RESET_ALL).strip().lower()
+        if action not in ["add", "update"]:
+            print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
+            continue
 
         while True:  # Loop for email input
             email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
