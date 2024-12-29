@@ -20,7 +20,8 @@ COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
 VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "Not Interested"]
 
 # Import colors from colorama
-from colorama import Fore, Back, Style
+from colorama import init
+init(autoreset=True)
 
 class Customer:
     """
