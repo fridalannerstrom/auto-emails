@@ -22,6 +22,21 @@ VALID_STATUSES = ["Not sent", "E-mail 1", "E-mail 2", "E-mail 3", "Meeting", "No
 # Import colors from colorama
 from colorama import Fore, Back, Style
 
+def format_text(text, color="cyan"):
+    """
+    Format text with bold style and specified color.
+    """
+    colors = {
+    "cyan": Fore.CYAN,
+    "red": Fore.RED,
+    "green": Fore.GREEN
+    }
+
+    selected_color = colors.get(color.lower(), Fore.RESET) 
+    bold_prefix = "\033[1m"  
+    reset_suffix = Style.RESET_ALL + "\033[0m"  
+    return f"{bold_prefix}{selected_color}{text}{reset_suffix}"
+
 class Customer:
     """
     This class manages customer data stored in the Notion database.
@@ -82,7 +97,7 @@ class Customer:
             properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
         
         self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
-        print(Fore.GREEN + f"🟢 Success! Customer '{email}' added to the database." + Style.RESET_ALL)
+        print(format_text(f"🟢 Success! Customer '{email}' added to the database.", color="green"))
 
     def update_notes(self, page_id, action, content=None):
         """
@@ -98,7 +113,7 @@ class Customer:
         elif action == "replace":
             updated_notes = content.strip()
         else:
-            print(Fore.RED + "🔴 Invalid action. No changes made to notes." + Style.RESET_ALL)
+            print(format_text("🔴 Invalid action. No changes made to notes.", color="red"))
             return
 
         self.notion.pages.update(
@@ -107,7 +122,7 @@ class Customer:
                 "Notes": {"rich_text": [{"text": {"content": updated_notes}}]},
             },
         )
-        print(Fore.GREEN + f"🟢 Success! Notes updated to: {updated_notes}" + Style.RESET_ALL)
+        print(format_text(f"🟢 Success! Notes updated to: {updated_notes}", color="green"))
 
     def update_status(self, page_id, new_status):
         """
@@ -121,22 +136,7 @@ class Customer:
                 "Latest contact": {"date": {"start": current_date}},
             },
         )
-        print(Fore.GREEN + f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'." + Style.RESET_ALL)
-
-def format_text(text, color="cyan"):
-    """
-    Format text with bold style and specified color.
-    """
-    colors = {
-    "cyan": Fore.CYAN,
-    "red": Fore.RED,
-    "green": Fore.GREEN
-    }
-
-    selected_color = colors.get(color.lower(), Fore.RESET) 
-    bold_prefix = "\033[1m"  
-    reset_suffix = Style.RESET_ALL + "\033[0m"  
-    return f"{bold_prefix}{selected_color}{text}{reset_suffix}"
+        print(format_text(f"🟢 Success! Status updated to '{new_status}' and date set to '{current_date}'.", color="green"))
 
 def main():
     """
@@ -150,35 +150,35 @@ def main():
         # Ask user to add or update email
         action = input(format_text("Let's get started! Do you want to add or update email? (add/update):\n", color="cyan")).strip().lower()
         if action not in ["add", "update"]:
-            print(Fore.RED + "🔴 Invalid choice. Please choose 'add' or 'update'." + Style.RESET_ALL)
+            print(format_text("🔴 Invalid choice. Please choose 'add' or 'update'.", color="red"))
             continue
 
         while True:  # Loop for email input
-            email = input(Fore.CYAN + "Enter email:\n" + Style.RESET_ALL).strip()
+            email = input(format_text("Enter email:\n", color="cyan")).strip()
 
             # Check if email is valid
             if not customer_manager.is_valid_email(email):
-                print(Fore.RED + f"🔴 Email '{email}' is not valid. Please try again." + Style.RESET_ALL)
+                print(format_text(f"🔴 Email '{email}' is not valid. Please try again.", color="red"))
                 continue
 
             if action == "add":
                 # Check if email is in database
                 if customer_manager.find_by_email(email):
-                    print(Fore.RED + f"🔴 Email '{email}' already exists in the database. Please enter a new email." + Style.RESET_ALL)
+                    print(format_text(f"🔴 Email '{email}' already exists in the database. Please enter a new email.", color="red"))
                     continue
                 else:
-                    print(Fore.GREEN + f"Good to go! '{email}' does not exist in the database." + Style.RESET_ALL)
+                    print(format_text(f"Good to go! '{email}' does not exist in the database.", color="cyan"))
 
                 # Ask for company and check company sales list
                 company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
                 if company and customer_manager.is_company_in_sales_list(company):
-                    print(Fore.RED + f"🔴 Company '{company}' is already in the sales list. Cannot add this email." + Style.RESET_ALL)
+                    print(format_text(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.", color="red"))
                     continue
                 else:
-                    print(Fore.GREEN + f"Good to go! '{company}' is not in the sales list." + Style.RESET_ALL)
+                    print(format_text(f"Good to go! '{company}' is not in the sales list.", color="cyan"))
 
                 # Ask for notes and add customer
-                notes = input(Fore.CYAN + "Enter notes (optional):\n" + Style.RESET_ALL).strip()
+                notes = input(format_text("Enter notes (optional):\n", color="cyan")).strip()
                 customer_manager.create(email, company, notes)
                 break
 
@@ -188,10 +188,10 @@ def main():
                 page_id = page["id"]
 
                 if not page:
-                    print(Fore.RED + f"🔴 Email '{email}' not found in the database. Please enter a valid email." + Style.RESET_ALL)
+                    print(format_text(f"🔴 Email '{email}' not found in the database. Please enter a valid email.", color="red"))
                     continue
                 else:
-                    print(Fore.GREEN + f"Good to go! '{email}' was found in the database." + Style.RESET_ALL)
+                    print(format_text(f"Good to go! '{email}' was found in the database.", color="cyan"))
 
                 # Get the current notes in database
                 current_notes = "".join(
@@ -200,63 +200,63 @@ def main():
 
                 # Ask for update notes or status
                 while True:
-                    update_action = input(Fore.CYAN + "Do you want to update status or notes? (status/notes):\n" + Style.RESET_ALL).strip().lower()
+                    update_action = input(format_text("Do you want to update status or notes? (status/notes):\n", color="cyan")).strip().lower()
 
                     # Update status
                     if update_action == "status":
-                        print(Fore.CYAN + f"Current status: {page['properties']['Status']['status']['name']}" + Style.RESET_ALL)
+                        print(format_text(f"Current status: {page['properties']['Status']['status']['name']}", color="cyan"))
                         new_status = None
                         while not new_status:
-                            print(Fore.CYAN + f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}" + Style.RESET_ALL)
-                            new_status_input = input(Fore.CYAN + "New status:\n" + Style.RESET_ALL).strip()
+                            print(format_text(f"Enter the new status. Valid options are: {', '.join(VALID_STATUSES)}", color="cyan"))
+                            new_status_input = input(format_text("New status:\n", color="cyan")).strip()
                             if new_status_input in VALID_STATUSES:
                                 new_status = new_status_input
                             else:
-                                print(Fore.RED + f"🔴 Invalid status '{new_status_input}'. Please try again." + Style.RESET_ALL)
+                                print(format_text(f"🔴 Invalid status '{new_status_input}'. Please try again.", color="red"))
                         customer_manager.update_status(page_id, new_status)
 
                         # Add notes after status update
                         while True:
-                            add_notes = input(Fore.CYAN + "Do you want to add or update notes as well? (yes/no):\n" + Style.RESET_ALL).strip().lower()
+                            add_notes = input(format_text("Do you want to add or update notes as well? (yes/no):\n", color="cyan")).strip().lower()
                             if add_notes == "yes":
                                 while True:
-                                    print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
-                                    note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                                    print(format_text(f"Current notes: {current_notes}", color="cyan"))
+                                    note_action = input(format_text("What do you want to do with the notes? (add/replace):\n", color="cyan")).strip().lower()
                                     if note_action in ["add", "replace"]:
-                                        content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
+                                        content = input(format_text("Enter your notes:\n", color="cyan")).strip()
                                         customer_manager.update_notes(page_id, note_action, content)
                                         main()
                                         break
                                     else:
-                                        print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                                        print(format_text("🔴 Invalid choice for notes. Please try again.", color="red"))
                                 break
                             elif add_notes == "no":
-                                print(Fore.CYAN + "No notes were added or updated." + Style.RESET_ALL)
+                                print(format_text("No notes were added or updated.", color="cyan"))
                                 main()
                                 break
                             else:
-                                print(Fore.RED + "🔴 Invalid input. Please enter 'yes' or 'no'." + Style.RESET_ALL)
+                                print(format_text("🔴 Invalid input. Please enter 'yes' or 'no'.", color="red"))
                         break
 
                     # Update notes
                     elif update_action == "notes":
-                        print(Fore.CYAN + f"Current notes: {current_notes}" + Style.RESET_ALL)
+                        print(format_text(f"Current notes: {current_notes}", color="cyan"))
 
                         while True: 
-                            note_action = input(Fore.CYAN + "What do you want to do with the notes? (add/replace):\n" + Style.RESET_ALL).strip().lower()
+                            note_action = input(format_text("What do you want to do with the notes? (add/replace):\n", color="cyan")).strip().lower()
 
                             if note_action in ["add", "replace"]:
-                                content = input(Fore.CYAN + "Enter your notes:\n" + Style.RESET_ALL).strip()
+                                content = input(format_text("Enter your notes:\n", color="cyan")).strip()
                                 customer_manager.update_notes(page_id, note_action, content)
                                 main()
                                 break
                             else:
-                                print(Fore.RED + "🔴 Invalid choice for notes. Please try again." + Style.RESET_ALL)
+                                print(format_text("🔴 Invalid choice for notes. Please try again.", color="red"))
                                 note_action = None  # Reset note_action to stay in the loop
                         break
 
                     else:
-                        print(Fore.RED + "🔴 Invalid update choice. Please choose 'status' or 'notes'." + Style.RESET_ALL)
+                        print(format_text("🔴 Invalid update choice. Please choose 'status' or 'notes'.", color="red"))
 
 
 if __name__ == "__main__":
