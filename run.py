@@ -170,7 +170,7 @@ def main():
                     print(format_text(f"Good to go! '{email}' does not exist in the database.", color="cyan"))
 
                 # Ask for company and check company sales list
-                company = input(Fore.CYAN + "Enter company name (optional):\n" + Style.RESET_ALL).strip()
+                company = input(format_text("Enter company name (optional):\n", color="cyan")).strip()
                 if company and customer_manager.is_company_in_sales_list(company):
                     print(format_text(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.", color="red"))
                     continue
