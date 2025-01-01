@@ -167,7 +167,7 @@ def main():
                     print(format_text(f"🔴 Email '{email}' already exists in the database. Please enter a new email.", color="red"))
                     continue
                 else:
-                    print(format_text(f"Good to go! '{email}' does not exist in the database.", color="cyan"))
+                    print(format_text(f"Good to go! '{email}' does not exist in the database.", color="green"))
 
                 # Ask for company and check company sales list
                 company = input(format_text("Enter company name (optional):\n", color="cyan")).strip()
@@ -175,7 +175,7 @@ def main():
                     print(format_text(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.", color="red"))
                     continue
                 else:
-                    print(format_text(f"Good to go! '{company}' is not in the sales list.", color="cyan"))
+                    print(format_text(f"Good to go! '{company}' is not in the sales list.", color="green"))
 
                 # Ask for notes and add customer
                 notes = input(format_text("Enter notes (optional):\n", color="cyan")).strip()
@@ -191,7 +191,7 @@ def main():
                     print(format_text(f"🔴 Email '{email}' not found in the database. Please enter a valid email.", color="red"))
                     continue
                 else:
-                    print(format_text(f"Good to go! '{email}' was found in the database.", color="cyan"))
+                    print(format_text(f"Good to go! '{email}' was found in the database.", color="green"))
 
                 # Get the current notes in database
                 current_notes = "".join(
