@@ -10,7 +10,7 @@ with open("creds.json", "r") as file:
 # Set up client with API-token
 notion = Client(auth=creds["NOTION_TOKEN"])
 
-# Database ID with potential customer emails
+# Database ID with lead emails
 DATABASE_ID = "168284e4604f8013a728d0aa102775aa" 
 
 # Database ID for current customers company
@@ -37,21 +37,21 @@ def format_text(text, color="cyan"):
     reset_suffix = Style.RESET_ALL + "\033[0m"  
     return f"{bold_prefix}{selected_color}{text}{reset_suffix}"
 
-class Customer:
+class Lead:
     """
-    This class manages customer data stored in the Notion database.
+    This class manages lead data stored in the Notion database.
 
     Attributes:
-        E-mail (str): The customer's email address.
-        Company (str): The name of the company where the customer works (optional).
+        E-mail (str): The lead's email address.
+        Company (str): The name of the company where the lead works (optional).
         Status (str): The status of the sales interaction (e.g., 'Email sent', 'Not sent', 'Meeting booked').
-        Latest contact (str): The date of the most recent contact with the customer via email.
-        Notes (str): Additional notes or comments related to the customer.
+        Latest contact (str): The date of the most recent contact with the lead via email.
+        Notes (str): Additional notes or comments related to the lead.
     """
 
     def __init__(self, notion_client, database_id, company_database_id):
         """
-        Set the Customer Class with Notion client and database IDs
+        Set the Lead Class with Notion client and database IDs
         """
         self.notion = notion_client
         self.database_id = database_id
@@ -66,7 +66,7 @@ class Customer:
 
     def find_by_email(self, email):
         """
-        Search for a customer in the email database by their email.
+        Search for a lead in the email database by their email.
         """
         response = self.notion.databases.query(database_id=self.database_id)
         for page in response["results"]:
@@ -86,7 +86,7 @@ class Customer:
 
     def create(self, email, company=None, notes=None):
         """
-        Add a new customer to the database.
+        Add a new lead to the database.
         """
         properties = {
             "E-mail": {"title": [{"text": {"content": email}}]},
@@ -97,11 +97,11 @@ class Customer:
             properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
         
         self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
-        print(format_text(f"🟢 Success! Customer '{email}' added to the database.", color="green"))
+        print(format_text(f"🟢 Success! Lead '{email}' added to the database.", color="green"))
 
     def update_notes(self, page_id, action, content=None):
         """
-        Update the notes for a specific customer.
+        Update the notes for a specific lead.
         """
         page = self.notion.pages.retrieve(page_id=page_id)
         current_notes = "".join(
@@ -126,7 +126,7 @@ class Customer:
 
     def update_status(self, page_id, new_status):
         """
-        Update the status and latest contact date for a customer.
+        Update the status and latest contact date for a lead.
         """
         current_date = datetime.now().strftime("%Y-%m-%d")
         self.notion.pages.update(
@@ -140,10 +140,10 @@ class Customer:
 
 def main():
     """
-    Main function to manage customer data in the Notion database.
+    Main function to manage lead data in the Notion database.
     """
 
-    customer_manager = Customer(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
+    lead_manager = Lead(notion_client=notion, database_id=DATABASE_ID, company_database_id=COMPANY_DATABASE_ID)
 
     while True:  # Infinite loop to keep this running
 
@@ -157,13 +157,13 @@ def main():
             email = input(format_text("Enter email:\n", color="cyan")).strip()
 
             # Check if email is valid
-            if not customer_manager.is_valid_email(email):
+            if not lead_manager.is_valid_email(email):
                 print(format_text(f"🔴 Email '{email}' is not valid. Please try again.", color="red"))
                 continue
 
             if action == "add":
                 # Check if email is in database
-                if customer_manager.find_by_email(email):
+                if lead_manager.find_by_email(email):
                     print(format_text(f"🔴 Email '{email}' already exists in the database. Please enter a new email.", color="red"))
                     continue
                 else:
@@ -171,26 +171,26 @@ def main():
 
                 # Ask for company and check company sales list
                 company = input(format_text("Enter company name (optional):\n", color="cyan")).strip()
-                if company and customer_manager.is_company_in_sales_list(company):
+                if company and lead_manager.is_company_in_sales_list(company):
                     print(format_text(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.", color="red"))
                     continue
                 else:
                     print(format_text(f"Good to go! '{company}' is not in the sales list.", color="green"))
 
-                # Ask for notes and add customer
+                # Ask for notes and add lead
                 notes = input(format_text("Enter notes (optional):\n", color="cyan")).strip()
-                customer_manager.create(email, company, notes)
+                lead_manager.create(email, company, notes)
                 break
 
             elif action == "update":
                 # Check if email is in database
-                page = customer_manager.find_by_email(email)
-                page_id = page["id"]
+                page = lead_manager.find_by_email(email)
 
                 if not page:
                     print(format_text(f"🔴 Email '{email}' not found in the database. Please enter a valid email.", color="red"))
                     continue
                 else:
+                    page_id = page["id"]
                     print(format_text(f"Good to go! '{email}' was found in the database.", color="green"))
 
                 # Get the current notes in database
@@ -213,7 +213,7 @@ def main():
                                 new_status = new_status_input
                             else:
                                 print(format_text(f"🔴 Invalid status '{new_status_input}'. Please try again.", color="red"))
-                        customer_manager.update_status(page_id, new_status)
+                        lead_manager.update_status(page_id, new_status)
 
                         # Add notes after status update
                         while True:
@@ -224,7 +224,7 @@ def main():
                                     note_action = input(format_text("What do you want to do with the notes? (add/replace):\n", color="cyan")).strip().lower()
                                     if note_action in ["add", "replace"]:
                                         content = input(format_text("Enter your notes:\n", color="cyan")).strip()
-                                        customer_manager.update_notes(page_id, note_action, content)
+                                        lead_manager.update_notes(page_id, note_action, content)
                                         main()
                                         break
                                     else:
@@ -247,7 +247,7 @@ def main():
 
                             if note_action in ["add", "replace"]:
                                 content = input(format_text("Enter your notes:\n", color="cyan")).strip()
-                                customer_manager.update_notes(page_id, note_action, content)
+                                lead_manager.update_notes(page_id, note_action, content)
                                 main()
                                 break
                             else:
