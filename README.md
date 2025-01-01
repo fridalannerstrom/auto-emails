@@ -8,10 +8,10 @@ To simplify and speed up my workflow, I developed a Python tool to streamline em
 
 # Table of content
 
-1. [Title](#title)
-   - [Title](#title)
-   - [Title](#title)
-   - [Title](#title)
+1. [Background](#Background)
+   - [Workflows](#title)
+   - [Databases](#title)
+   - [Areas for Improvement](#title)
    - [Title](#title)
    - [Title](#title)
 
@@ -49,6 +49,8 @@ When a Notion database becomes very full, I’ve noticed it tends to become slug
 This shortcoming requires me to manually ensure that an email doesn’t already exist in the database before adding it. To do so, I must load all database rows — clicking "load more" repeatedly — and then manually search (Ctrl + F) for every email I want to add. Additionally, I need to verify that the company associated with the email is not already in our sales list. This involves switching to a separate database, loading its data in a similar manner, and manually searching for the company name. These extra steps, while manageable in isolation, become highly repetitive and time-consuming when performed daily.
 
 Despite my diligence in double-checking, duplicates occasionally slip through — whether it’s the same email added twice or contacting a lead from a company that’s already in our sales list. This has resulted in scenarios where emails were sent redundantly, even to leads who had previously declined. An automated solution for detecting duplicates across both databases would save significant time, reduce errors, and streamline the entire workflow.
+
+----
 
 ### Workflow 2: Updating existing emails
 
@@ -101,17 +103,24 @@ The status column has specific options to choose from. The status can only be on
 
 ### Database 2: Company sales list
 
-PRINTSCREEN
+![Company list database](images/company-database.png)
 
-See database live here: (LINK)
+[SEE DATABASE LIVE HERE](https://sedate-molybdenum-41d.notion.site/company-database-168284e4604f80aca775d10d51bce604?pvs=4)
 
-This database is intentionally simple, containing only the companies that are our current customers. As a B2B company, we focus on tracking companies rather than individual contacts within them. The primary purpose of this database is to ensure that leads in the email list are not already existing customers. Since it serves a specific function, it is not updated frequently.
+This database showcases all the companies we are already selling to. These are businesses where our Key Account Managers are actively engaged in conversations or ongoing sales. As such, I don’t need to include these companies in my lead management process, ensuring my focus remains on new opportunities.
+
+This database is intentionally simple, containing only the companies that are our current customers. As a B2B company, we focus on tracking companies rather than individual contacts within them. The primary purpose of this database is to ensure that leads in the email list are not already existing customers.
+
+There have been discussions about complementing this database with additional information, such as contact persons and which salesperson is responsible for the account. However, this information serves no purpose for me in my role. My primary concern is determining whether a company is already in our sales list, ensuring I don’t contact individuals at companies we are already selling to. This database is critical for preventing overlap between leads and existing customers, ensuring our email outreach is efficient and focused.
+
+This list isn’t updated frequently, and when updates are needed, I can handle them manually. For now, I’ve chosen not to include this database in the Python program, as there are other areas where Python automation provides far greater efficiency and impact.
 
 # Flowchart
 
-I use Notion daily to manage sales emails, which is a part of my role in supporting the sales team. My workflow includes finding emails, sending emails and keeping track of email activity. The ultimate goal of these emails is to help the sales team book meetings for product demos. 
 
-While Notion is an excellent tool for many purposes, it lacks the flexibility and automation I need for these specific tasks. To address this, I built a Python-based solution that integrates seamlessly with Notion, making email management faster, easier, and more reliable.
+
+
+
 
 Include:
 - Introduction to the project
