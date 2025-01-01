@@ -8,14 +8,57 @@ To simplify and speed up my workflow, I developed a Python tool to streamline em
 
 # Table of content
 
-1. [Background](#Background)
-   - [Workflows](#title)
-   - [Databases](#title)
-   - [Areas for Improvement](#title)
-   - [Title](#title)
-   - [Title](#title)
+1. [Introduction](#introduction)
+    - [Background](#background)
+    - [Workflow](#workflow)
+    - [Databases Overview](#databases)
+    - [Project Goals](#summary)
 
-# Background
+2. [Project Overview](#project-overview)
+    - [Flowchart](#workflow)
+    - [Requirements](#databases)
+    - [Key Features](#summary) (berätta vad man faktiskt kan göra i programmet)
+    - [How It Works](#main-function)
+    - [User Experience](#features) (prata om colorama, att jag vill ha tydliga färger eftersom jag jobbar snabbt osv... berätta om hur jag valt att lägga upp feedbacken osv) 
+
+2. [Program Structure](#project-overview)
+    - [Notion API Integration](#workflow)
+    - [Lead Class](#databases)
+    - [Main Function](#summary)
+
+3. [How To Use The Program](#project-overview)
+    - [Adding Leads](#workflow)
+    - [Updating Leads](#databases)
+
+4. [Tools and Technologies](#project-overview)
+    - [Languages](#workflow)
+    - [Libraries](#databases)
+    - [Development Tools](#databases)
+    - [Other Tools](#databases)
+
+4. [Testing](#project-overview)
+    - [Code validation](#workflow)
+    - [Workflow testing](#databases)
+    - [Input testing](#databases)
+    - [Known Bugs and Limitations](#databases)
+
+5. [Future Improvements](#project-overview)
+    - [Automated Email Sending](#workflow)
+    - [Integration with CRM Systems](#databases)
+    - [Automated Reminders](#databases)
+
+5. [Deployment](#project-overview)
+    - [Local Deployment](#workflow)
+    - [GitHub Deployment](#databases)
+
+6. [Credits](#project-overview)
+    - [Content & Media](#workflow)
+    - [Other](#databases)
+    - [Acknowledgements](#acknowledgements)
+
+# Introduction
+
+## Background
 
 I work at a B2B company, supporting the sales team by managing email outreach to leads. My role includes responsibilities like social media, website management, and marketing, which naturally brings in a steady stream of leads. My primary tasks involve collecting these leads (email addresses) from various channels, following up with tailored emails based on pre-defined templates, and tracking progress.
 
@@ -115,11 +158,9 @@ There have been discussions about complementing this database with additional in
 
 This list isn’t updated frequently, and when updates are needed, I can handle them manually. For now, I’ve chosen not to include this database in the Python program, as there are other areas where Python automation provides far greater efficiency and impact.
 
-# Flowchart
+# Project Overview
 
-
-
-
+## Flowchart
 
 
 Include:
