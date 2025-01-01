@@ -10,50 +10,46 @@ To simplify and speed up my workflow, I developed a Python tool to streamline em
 
 1. [Introduction](#introduction)
     - [Background](#background)
-    - [Workflow](#workflow)
-    - [Databases Overview](#databases)
-    - [Project Goals](#summary)
+    - [Workflows](#workflows)
+    - [Databases Overview](#databases-overview)
+    - [Project Goals](#project-goals)
 
 2. [Project Overview](#project-overview)
-    - [Flowchart](#workflow)
-    - [Requirements](#databases)
-    - [Key Features](#summary) (berätta vad man faktiskt kan göra i programmet)
-    - [How It Works](#main-function)
-    - [User Experience](#features) (prata om colorama, att jag vill ha tydliga färger eftersom jag jobbar snabbt osv... berätta om hur jag valt att lägga upp feedbacken osv) 
+    - [Requirements](#requirements)
+    - [Flowchart](#flowchart)
+    - [Key Features](#key-features) (berätta vad man faktiskt kan göra i programmet)
+    - [How To Use The Program](#how-to-use-the-program)
+    - [User Experience](#user-experience) (prata om colorama, att jag vill ha tydliga färger eftersom jag jobbar snabbt osv... berätta om hur jag valt att lägga upp feedbacken osv) 
 
-2. [Program Structure](#project-overview)
-    - [Notion API Integration](#workflow)
-    - [Lead Class](#databases)
-    - [Main Function](#summary)
+2. [Program Structure](#program-structure)
+    - [Notion API Integration](#notion-api-integration)
+    - [Lead Class](#lead-class)
+    - [Main Function](#main-function)
 
-3. [How To Use The Program](#project-overview)
-    - [Adding Leads](#workflow)
-    - [Updating Leads](#databases)
+3. [Tools and Technologies](#tools-and-technologies)
+    - [Languages](#languages)
+    - [Libraries](#libraries)
+    - [Development Tools](#development-tools)
+    - [Other Tools](#other-tools)
 
-4. [Tools and Technologies](#project-overview)
-    - [Languages](#workflow)
-    - [Libraries](#databases)
-    - [Development Tools](#databases)
-    - [Other Tools](#databases)
+4. [Testing](#testing)
+    - [Code Validation](#code-validation)
+    - [Workflow Testing](#workflow-testing)
+    - [Input Testing](#input-testing)
+    - [Known Bugs and Limitations](#known-bugs-and-limitations)
 
-4. [Testing](#project-overview)
-    - [Code validation](#workflow)
-    - [Workflow testing](#databases)
-    - [Input testing](#databases)
-    - [Known Bugs and Limitations](#databases)
+5. [Future Improvements](#future-improvments)
+    - [Automated Email Sending](#automated-email-sending)
+    - [Integration with CRM Systems](#integration-with-crm-systems)
+    - [Automated Reminders](#automated-reminders)
 
-5. [Future Improvements](#project-overview)
-    - [Automated Email Sending](#workflow)
-    - [Integration with CRM Systems](#databases)
-    - [Automated Reminders](#databases)
+6. [Deployment](#deployment)
+    - [Local Deployment](#local-deployment)
+    - [GitHub Deployment](#github-deployment)
 
-5. [Deployment](#project-overview)
-    - [Local Deployment](#workflow)
-    - [GitHub Deployment](#databases)
-
-6. [Credits](#project-overview)
-    - [Content & Media](#workflow)
-    - [Other](#databases)
+7. [Credits](#credits)
+    - [Content](#content)
+    - [Other](#other)
     - [Acknowledgements](#acknowledgements)
 
 # Introduction
@@ -78,14 +74,14 @@ These workflows are described in more detail below.
 
 I typically start my workday by spending around 30 minutes gathering email addresses from channels where potential leads can be found, such as social media, our CRM system, the company website, or other platforms frequented by our target audience. These email addresses are then added to a list of potential leads to be contacted.
 
-**📋 Workflow step by step**
+#### 📋 **Workflow step by step**
 
 1. Find email that I find relevant to contact.
 2. Check if email is in database already.
 3. Add email to database if email isn't already there.
 4. Add information about company and notes (if any)
 
-**🤯 Issues with this workflow**
+#### 🤯 **Issues with this workflow**
 
 When a Notion database becomes very full, I’ve noticed it tends to become sluggish and laggy, making data handling unnecessarily time-consuming. This is especially challenging in my case, where I need to view the entire database, which contains hundreds of data points. Beyond the performance issues, however, there is a significant limitation in Notion’s functionality: the lack of automatic duplicate detection for databases.
 
@@ -103,7 +99,7 @@ If a lead doesn’t respond within a week, I send a reminder email, updating the
 
 My workflow isn’t fixed but adapts based on when I send emails or receive responses. As soon as a lead replies, I update the database immediately to ensure the information is always accurate. Since my sales team depends on this database, keeping it up-to-date is essential.
 
-**🤯 Issues with this workflow**
+#### **🤯 Issues with this workflow**
 
 When I send an email to a lead, or receive a reply from a lead, I have to open the database, repeatedly click "load more" to access all the rows, and wait for everything to load — a process that becomes slow with larger datasets.
 
@@ -111,7 +107,7 @@ Once the database is fully loaded, I use Ctrl+F to search for the specific email
 
 Of course, keeping the database open all the time would help streamline this process. However, since I use Notion extensively for various tasks, I often navigate elsewhere and forget to keep the leads database ready, adding another layer of inefficiency to my daily workflow.
 
-## Databases in Notion
+## Databases Overview
 
 I have two databases in Notion, one for emails to potential new leads and one for current customers.
 
@@ -158,19 +154,150 @@ There have been discussions about complementing this database with additional in
 
 This list isn’t updated frequently, and when updates are needed, I can handle them manually. For now, I’ve chosen not to include this database in the Python program, as there are other areas where Python automation provides far greater efficiency and impact.
 
+## Project Goals
+
+A summary of the issues, what we have to work with (current workflow and databases) and what we want to achieve. A very easy way to add stuff in the database. Simple and easy since I do this quick. I don't have time for a lot of text or choices.
+
 # Project Overview
+
+## Requirements
+
+A list of requirements for this project - what do we want this program to do? Vary concrete, think about it being very simple and giving messages to easily see if what I want to happen actually happened.
 
 ## Flowchart
 
+IMAGE OF FLOWCHART
 
-Include:
-- Introduction to the project
-- My work flow in Notion
-- Flowchart
-- Code: Notion API
-- Code: Change to classes, code before and after
-- Testing
-    - All inputs
-- Colorama
-- Trouble with notes
-- Future: Connection with outlook to update status automatically. A way to send lots of emails at the same time, to a bunch of emails. Auto send reminder emails to those that haven't answered. 
+## Key Features
+
+Explain what you actually can do in the program and what changed from the requirements, and flowchart (if any? for example, a lot more feedback messages?)
+
+## How To Use The Program
+
+Explain how to use the program. Link to the Heroku App.
+
+### How to add a lead
+
+Explain step-by-step how to add a lead
+
+### How to update a lead
+
+Explain step-by-step how to update a leads information.
+
+## User Experience
+
+Explain that the goal is to create a very easy, clear and simple way to handle leads. Not many options, not a lot of text. 
+
+### Adding Leads
+
+This is a process where quickness is important. I want to add leads as quickly as possible. So there should not be a lot of text or steps to add a lead, thats important. and I want clear messages in this process to that I see right away that this lead is not already in the database, or in the company sales list. And then, a very clear way to see that an action has happened with an emoji. Leaving company and notes optional because I sometimes don't have time fixing this, I sometimes add this later when theres time. I want feedback all the time, after every input.
+
+### Updating Leads
+
+This is also a process where I want quickness. I want to only show the important things. So, a success message that the email I want to edit is actually in the database, that the program found the email. And show current status and notes, so I get a qucik overview of what currently is in the database. When updating a lead, date and company is not important, so this is not shown at all. Here I also use emojis to easily show that something has happened or not. Here I also want a lot of feedback, so I know things are going as expected. 
+
+### Colorama
+
+I use colorama for a better user experience... Cyan is for basic messages, green is for something good, red is for something "bad" (something didn't go as planned). Explan how I installed colorama etc. I don't want to waste time reading to much so I'm happy just to look at a color and see if it went as I wanted or not.
+
+# Program Structure
+
+The program is structured with API integration to Notion. A class and methods to handle leads and a main function to handle.... more information below.
+
+## Notion API
+
+Explain how this works, link to the page where I was guided.
+
+## Lead Class
+
+Explan the lead class and why I chose to do this. Show before and after code.
+
+## Main function
+
+Explain how the main function is set up, and how it works with the methods. Maybe also talk about how this could be improved?
+
+## Other
+
+Function to handle formatting on messages, because there is so many messages and it was repetativ to formatt every one (show before and after)
+
+## Issues
+
+Trouble with notes loop, wanting to loop back to the main function when I'm deep in a loop. I solved this by getting function main inside the loop. Not so clean but it works...
+
+# Tools and Technologies
+
+## Languages
+
+Python only
+
+## Libraries
+
+json: Parses the creds.json file to extract Notion API credentials.
+notion_client: Facilitates interaction with the Notion API, enabling CRUD operations in Notion databases.
+re: Validates email addresses to ensure data integrity.
+datetime: Tracks the date of the last interaction with leads.
+colorama: Enhances the terminal interface with colored and styled text.
+
+## Development Tools
+
+Gitpod, Github, Heroku
+
+## Other Tools
+
+Notion: The core database platform integrated with the project, enabling lead management and email tracking.
+
+Python Interpreter: Used to run and test the Python program locally.
+
+# Testing
+
+## Code Validation
+
+PEP test thing
+
+## Workflow Testing
+
+Test if the program does what I wanted in the start? My list of requirements and wished from the start?
+
+## Input Testing 
+
+- Test for inputs:
+    - Things to test:
+    - a letter `a`
+    - multiple letters `abc`
+    - a number `1`
+    - multiple numbers `123`
+    - an empty ENTER with nothing `ENTER`
+    - only spaces
+    - special characters `?` `!` `@`
+    - `isalpha()` , `isnumeric()` , `isalphanum()`
+
+## Known Bugs and Limitations
+
+Not any that I know of!
+
+# Future Improvements
+
+Explain that I will definetly keep working with this project because it helped me so much already. I see the possibilitues with python and Notion for this workflow. Something that I want to do is:
+
+## Automated Email Sending
+The program could be extended to automatically send emails using predefined templates. Maybe a bunch of emails at a time. This would streamline the workflow further, eliminating the need to switch between the program and an email client.
+
+### Integration with CRM Systems
+Add integration with CRM platform Upsales so that Key Account Managers easily can see activity for leads.
+
+## Automated Reminders
+Set up automatic reminders for follow-ups. For instance, if a lead hasn’t replied within a week, the program could send a reminder notification or email.
+
+# Deployment
+
+## Local Deployment
+
+## Github Deployment
+
+# Credits
+
+## Content
+
+## Other
+
+## Acknowledgements
