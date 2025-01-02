@@ -239,12 +239,25 @@ This program was built to simplify and streamline the workflow of managing leads
 | **Input Error Handeling** | 1. Prevents invalid inputs, such as missing "@" in email addresses.<br>2. Prompts users to try again if an input is invalid. <br>3. Skips unnecessary inputs without generating errors. | 
 | **Avioding Breaks** | 1. Ensures the program never stops abruptly or loops back to the beginning when errors happen. | 
 
+----
 
+### Changes from Initial Requirements or Flowchart
 
+✅ **More Feedback Messages**<br>Additional confirmation and error messages were added to enhance user clarity.
+
+✅ **Improved Error Handling**<br>The program ensures smooth loops when invalid inputs occur, rather than requiring users to start over.
+
+✅ **Focus on UX**<br>The color-coded system and reduced steps were optimized beyond the initial requirements to ensure the program feels intuitive and fast.
+
+✅ **Enhanced Input Validation**<br>The program ensures that user inputs are accurate by verifying key details, such as confirming that an email address is valid and that the status selected matches predefined options. This prevents incorrect or invalid data from being added to the database, maintaining its integrity and reliability.
 
 ## How To Use The Program
 
-Explain how to use the program. Link to the Heroku App.
+This program is deployed via Heroku and can be accessed here: [Auto Emails Application](https://auto-emails-e92e0f29caf5.herokuapp.com/)
+
+To view the leads database and verify that leads are being added or updated, visit: [Leads Database](https://sedate-molybdenum-41d.notion.site/auto-emails-168284e4604f806eb9a7dcdc7e005e9b?pvs=4)
+
+To access the company sales list database and ensure accuracy in the workflow, visit: [Company Database](https://sedate-molybdenum-41d.notion.site/company-database-168284e4604f80aca775d10d51bce604?pvs=4)
 
 ### How to add a lead
 
