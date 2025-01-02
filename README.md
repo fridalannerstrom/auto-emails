@@ -156,7 +156,21 @@ This list isn’t updated frequently, and when updates are needed, I can handle 
 
 ## Project Goals
 
-A summary of the issues, what we have to work with (current workflow and databases) and what we want to achieve. A very easy way to add stuff in the database. Simple and easy since I do this quick. I don't have time for a lot of text or choices.
+Now that we've outlined the databases, workflows, and current issues with the workflow, let's focus on what we aim to achieve with this project. The goal is to streamline and simplify the process of managing leads while addressing the inefficiencies and limitations of the current system. This tool should enable a quick and seamless workflow, allowing for efficient handling of leads without unnecessary complexity or delays.
+
+**Below is an overview of the primary goals for the project:**
+
+| Goal | Description | 
+| ------- | ---------- | 
+| **Add New Leads** | Provide a quick and easy way to add new email leads to the database with minimal effort. | 
+| **Automatic Duplicate Checker** | Ensure no duplicate emails are added by automatically checking if the email already exists. | 
+| **Company Sales List Checker** | Automatically check if the lead belongs to a company we already sell to, avoiding redundant outreach. |
+| **Update Email Status** | Simplify the process of updating the status and contact date of an email lead. |
+| **Update Notes** | Make it easy to update or add notes for existing leads to keep track of relevant details. |
+| **Minimal Options and Text** | Keep the workflow simple and to the point, avoiding unnecessary text or options for a fast UX. |
+| **Clear Feedback** | Provide immediate and clear feedback to instantly confirm whether the expected action was successful or if an issue, like a duplicate, occurred. |
+
+The overarching goal is to create a tool that integrates seamlessly into the current workflow, saving time and effort while providing the necessary features to manage leads effectively. This project aims to prioritize simplicity, speed, and usability for daily tasks.
 
 # Project Overview
 
