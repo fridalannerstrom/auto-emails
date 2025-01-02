@@ -200,7 +200,32 @@ This requirements list outlines the specific functionality and features that thi
 
 ## Flowchart
 
-IMAGE OF FLOWCHART
+![Flowchart](images/flowchart.png)
+
+This flowchart, created in Adobe XD, illustrates the basic process for adding or updating leads in the program. The focus is on minimizing steps and creating an efficient, user-friendly flow. Using a flowchart as a visual representation allows me to clearly see the logical flow of the program, helping me break down workflows into manageable steps. 
+
+| Shape/Color | Meaning | 
+| ------- | ---------- | 
+| **Circle** | Represents the start or end of the flow. | 
+| **Diamond** | Represents a decision point in the workflow, such as yes/no or multiple choices. | 
+| **Rectangle** | Represents an input or print step. | 
+| **Purple** | Represents a program action, such as checking the database or displaying a message. | 
+| **Grey** | Represents a user action, such as entering an email or selecting a status. | 
+
+### Key aspects to note
+
+**Seamless Workflow**
+
+The program is designed to loop in a way that aligns with my workflow. For example, if I try to add an email that already exists in the leads database, I want the program to prompt me to re-enter a new email instead of sending me back to the start. This ensures continuity in the "add leads" process.
+
+**Error Handling**
+
+Similarly, if I for example add an email associated with a company already in the sales list or attempt to update a lead that doesn’t exist in the database, I want clear error messages and the ability to quickly retry without disrupting the workflow.
+
+**No Hard Stops**
+
+The program is intentionally designed to never "stop" or "end". Once I successfully complete an action — such as adding a new lead or updating a lead’s information — the program should seamlessly return to the beginning, ready for the next input.
+
 
 ## Key Features
 
@@ -281,6 +306,8 @@ Gitpod, Github, Heroku
 Notion: The core database platform integrated with the project, enabling lead management and email tracking.
 
 Python Interpreter: Used to run and test the Python program locally.
+
+Adobe XD for Flowchart
 
 # Testing
 
