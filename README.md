@@ -176,7 +176,27 @@ The overarching goal is to create a tool that integrates seamlessly into the cur
 
 ## Requirements
 
-A list of requirements for this project - what do we want this program to do? Vary concrete, think about it being very simple and giving messages to easily see if what I want to happen actually happened.
+This requirements list outlines the specific functionality and features that this program must deliver to meet the project goals. Each requirement has been tailored to address the challenges described in the project's background and workflow, focusing on simplicity, speed, and accuracy. This list of requirements serves as the foundation for the program's development.
+
+| Requirement | Description | 
+| ------- | ---------- | 
+| **Notion API Integration** | Use the Notion API to interact with two separate databases (leads and company sales list). This includes searching, retrieving, adding, and updating data efficiently. | 
+| **Add New Leads** | The program must allow the user to input a new email address, company name, and optional notes, and add these to the leads database. | 
+| **Duplicate Email Check** | Before adding a new email, the program must automatically search the leads database for the email. If the email is there, don't add the email to leads database. | 
+| **Block Invalid Emails** | Validate email addresses using a predefined format and reject invalid entries with a clear error message. | 
+| **Handle Optional Company Input** | Allow the user to optionally input a company name when adding a new lead, and verify against the company sales list database if provided. |
+| **Company Sales List Check** | The program must automatically search the company sales list database to check if the lead’s company is already a customer. If it is, don't add the email to leads database. |
+| **Update Lead Status** | The program must allow users to update the status field of a lead with predefined options. |
+| **Update Notes** | The program must provide an option to either add to or completely replace the notes field for an existing lead. |
+| **Immediate Feedback** | After every action, the program must display a message confirming success or failure. |
+| **Error Handling for Inputs** | If the user inputs an invalid email, status, or note action, the program must display a clear error message and prompt the user to retry. |
+| **Date Auto-Update** | When updating a lead's status, the program must automatically update the "Latest Contact" field with the current date. |
+| **Efficient Database Loading** | The program must bypass Notion’s "load more" limitation by directly querying the full database via the API. |
+| **Seamless Database Switching** | If a company check is required, the program must automatically switch to the company sales list database and return to the leads database afterward. |
+| **Predefined Status Options** | The program must restrict status updates to a fixed set of options (e.g., "Not Sent," "E-mail 1," "Meeting Booked") to maintain data consistency. |
+| **Minimal User Interaction** | If the user inputs an invalid email, status, or note action, the program must display a clear error message and prompt the user to retry. |
+| **Prevent Duplicate Companies** | The program must prevent users from adding leads whose companies are already in the sales list database. |
+| **Error Handling for Inputs** | If the user inputs an invalid email, status, or note action, the program must display a clear error message and prompt the user to retry. |
 
 ## Flowchart
 
