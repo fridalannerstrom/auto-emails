@@ -214,22 +214,33 @@ This flowchart, created in Adobe XD, illustrates the basic process for adding or
 
 ### Key aspects to note
 
-**Seamless Workflow**
-
-The program is designed to loop in a way that aligns with my workflow. For example, if I try to add an email that already exists in the leads database, I want the program to prompt me to re-enter a new email instead of sending me back to the start. This ensures continuity in the "add leads" process.
-
-**Error Handling**
-
-Similarly, if I for example add an email associated with a company already in the sales list or attempt to update a lead that doesn’t exist in the database, I want clear error messages and the ability to quickly retry without disrupting the workflow.
-
-**No Hard Stops**
-
-The program is intentionally designed to never "stop" or "end". Once I successfully complete an action — such as adding a new lead or updating a lead’s information — the program should seamlessly return to the beginning, ready for the next input.
-
+| Feature | Description | 
+| ------- | ---------- | 
+| **Seamless Workflow** | The program is designed to loop in a way that aligns with my workflow. For example, if I try to add an email that already exists in the leads database, I want the program to prompt me to re-enter a new email instead of sending me back to the start. This ensures continuity in the "add leads" process. | 
+| **Error Handling** | Similarly, if I for example add an email associated with a company already in the sales list or attempt to update a lead that doesn’t exist in the database, I want clear error messages and the ability to quickly retry without disrupting the workflow. | 
+| **No Hard Stops** | The program is intentionally designed to never "stop" or "end". Once I successfully complete an action — such as adding a new lead or updating a lead’s information — the program should seamlessly return to the beginning, ready for the next input. | 
 
 ## Key Features
 
-Explain what you actually can do in the program and what changed from the requirements, and flowchart (if any? for example, a lot more feedback messages?)
+This program was built to simplify and streamline the workflow of managing leads in Notion. Below are the key features that have been implemented, highlighting what the program can do and how it aligns with the initial requirements and flowchart. Any deviations or additions have been noted.
+
+| Feature | Description | 
+| ------- | ---------- | 
+| **Adding New Leads** | 1. Easily add new leads to the leads database with minimal input required.<br>2. Includes optional fields for company name and notes. <br>3. Automatically set status "Not sent" and leave date field empty. | 
+| **Automatic Leads Duplicate Check** | 1. Automatically checks for duplicate emails in the leads database when adding new leads.<br>2. Prevents duplicates from being added.<br>3. Shows clear error messages if duplicates are detected.<br>4. Displays success messages for non-duplicates. | 
+| **Automatic Company Sales List Check** | 1. Verifies whether a company associated with a lead already exists in the sales list database. <br>2. Prevents leads from being added if their company is an existing customer.<br>3. Shows clear error messages if a company is already in the sales list.<br>4. Displays success messages when the company is not in the sales list. | 
+| **Update Status for Existing Leads** | 1. Allows users to update the status of a lead (e.g., "E-mail 1," "Meeting") based on predefined options. <br>2. Displays the current status before updating.<br>3. Shows possible statuses to choose from. <br>4. Allows users to immediately update notes after status updates to fit the normal workflow. | 
+| **Date Auto-Update** | 1. Automatically updates the "Latest Contact" field whenever a lead's status changes. <br>2. Uses the current date dynamically for updates. | 
+| **Update Notes for Existing Leads** | 1. Enables users to add or replace notes for existing leads.<br>2. Displays current notes before input for clarity. | 
+| **Clear and Immediate Feedback** | 1. Provides clear, concise feedback for all actions, such as successful updates, errors, or duplicate detections.<br>2. Ensures users always know whether the intended action was successful or requires adjustments. | 
+| **Minimal User Interaction** | 1. Designed to minimize inputs and steps, aligning with the quick workflow needed for sales management. <br>2. Loops processes to allow users to fix errors without restarting the workflow. | 
+| **Enhanced User Experience** | 1. Uses color-coded feedback (via Colorama, more information below) to highlight important information. <br>2. Error messages and success confirmations are designed to provide all necessary information without overwhelming the user. <br>3. Emojis enhance feedback, making it easier to recognize successes or issues.| 
+| **Colored Messages** | 1. Differentiates program output from user input by using cyan for program messages and white for user input. <br>2. Error messages are displayed in red for immediate attention. <br>3. Success messages are displayed in green to confirm successful actions. |
+| **Input Error Handeling** | 1. Prevents invalid inputs, such as missing "@" in email addresses.<br>2. Prompts users to try again if an input is invalid. <br>3. Skips unnecessary inputs without generating errors. | 
+| **Avioding Breaks** | 1. Ensures the program never stops abruptly or loops back to the beginning when errors happen. | 
+
+
+
 
 ## How To Use The Program
 
