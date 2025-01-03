@@ -268,7 +268,7 @@ To access the company sales list database and ensure accuracy in the workflow, v
 Adding a lead to the database is a straightforward process with minimal steps, designed for efficiency. Below is a step-by-step guide on how to add a lead:
 
 1. **Start the program**<br>Launch the program with Heroku app here: [Auto Emails Application](https://auto-emails-e92e0f29caf5.herokuapp.com/)
-2. **Choose "Add"**<br>When asked `"Do you want to add or update email? (add/update):"` type `add` and press enter.
+2. **Choose "Add"**<br>When asked `Do you want to add or update email? (add/update):` type `add` and press enter.
 3. **Enter Email**<br>Type the email you want to add. If it already exists, you’ll see a red message and can re-enter a new email. If it’s new, you’ll see a green confirmation.
 4. **Enter Company (Optional)**<br>Add the company name or press enter to skip. If the company is in the sales list, you’ll be asked to try again with a different email. Otherwise, you’ll get a green confirmation.
 5. **Add Notes (Optional)**<br>Add any relevant notes or press enter to leave it blank.
@@ -283,11 +283,14 @@ Adding a lead to the database is a straightforward process with minimal steps, d
 Updating a lead provides more options compared to adding a lead since you might only want to update the status, the notes, or both. In my workflow, I always update the status first when both need to be changed. Here’s a step-by-step guide to updating a lead:
 
 1. **Start the program**<br>Launch the program with Heroku app here: [Auto Emails Application](https://auto-emails-e92e0f29caf5.herokuapp.com/)
-2. **Choose "Update"**<br>When asked `"Do you want to add or update email? (add/update):"` type `update` and press enter.
+2. **Choose "Update"**<br>When asked `Do you want to add or update email? (add/update):` type `update` and press enter.
 3. **Enter Email**<br>Type the email you want to add. If the email is found in the database, you'll proceed to the next step. If the email is not found, you'll receive an error message and be asked to re-enter an email.
-4. **Choose what to update**<br>Add the company name or press enter to skip. If the company is in the sales list, you’ll be asked to try again with a different email. Otherwise, you’ll get a green confirmation.
-5. **Add Notes (Optional)**<br>Add any relevant notes or press enter to leave it blank.
-6. **Done!**<br>A green success message confirms the lead was added. You can verify this here: [Leads Database](https://sedate-molybdenum-41d.notion.site/auto-emails-168284e4604f806eb9a7dcdc7e005e9b?pvs=4)
+4. **Choose what to update**<br>You'll be asked: `Do you want to update status or notes? (status/notes):`. Type `status` to update the lead's status. Type `notes` to update the lead's notes directly.
+5. **Update the status (if applicable)**<br>If you choose to update the status, the program will display the current status and valid options (e.g., `Not sent` `E-mail 1` `Meeting`). Enter the new status from the list of valid options. The program will automatically update the status and set the latest contact date to the current date.
+6. **Choose to update notes after status update (if applicable)**<br>After updating the status, the program will ask `Do you want to add or update notes as well? (yes/no):`. Type `yes` to proceed with updating the notes. Type `no` if you don’t want to update the notes.
+7. **Update the notes (if applicable)**<br>If you choose to update the notes, the program will show the current notes. You'll be asked `What do you want to do with the notes? (add/replace):`. Type `add` to add new notes to the existing ones. Type `replace` to overwrite the current notes. Enter the new note content when prompted.
+6. **Done!**<br>A green success message confirms the lead was updated. You can verify this here: [Leads Database](https://sedate-molybdenum-41d.notion.site/auto-emails-168284e4604f806eb9a7dcdc7e005e9b?pvs=4)
+
 
 ## User Experience
 
