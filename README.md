@@ -263,7 +263,7 @@ To access the company sales list database and ensure accuracy in the workflow, v
 
 ### How to add a lead
 
-![Add Lead](images/add-lead.png)
+![Add Lead](images/add-lead-readme.gif)
 
 Adding a lead to the database is a straightforward process with minimal steps, designed for efficiency. Below is a step-by-step guide on how to add a lead:
 
@@ -278,7 +278,7 @@ Adding a lead to the database is a straightforward process with minimal steps, d
 
 ### How to update a lead
 
-![Update Lead](images/update-lead.png)
+![Update Lead](images/update-lead-readme.gif)
 
 Updating a lead provides more options compared to adding a lead since you might only want to update the status, the notes, or both. In my workflow, I always update the status first when both need to be changed. Here’s a step-by-step guide to updating a lead:
 
@@ -294,27 +294,53 @@ Updating a lead provides more options compared to adding a lead since you might 
 
 ## User Experience
 
-Explain that the goal is to create a very easy, clear and simple way to handle leads. Not many options, not a lot of text. 
+The program is designed to prioritize speed, clarity, and precision for both adding and updating leads. The following features ensure a smooth and efficient workflow:
 
-### Adding Leads
+### Adding and Updating Leads
 
-This is a process where quickness is important. I want to add leads as quickly as possible. So there should not be a lot of text or steps to add a lead, thats important. and I want clear messages in this process to that I see right away that this lead is not already in the database, or in the company sales list. And then, a very clear way to see that an action has happened with an emoji. Leaving company and notes optional because I sometimes don't have time fixing this, I sometimes add this later when theres time. I want feedback all the time, after every input.
-
-### Updating Leads
-
-This is also a process where I want quickness. I want to only show the important things. So, a success message that the email I want to edit is actually in the database, that the program found the email. And show current status and notes, so I get a qucik overview of what currently is in the database. When updating a lead, date and company is not important, so this is not shown at all. Here I also use emojis to easily show that something has happened or not. Here I also want a lot of feedback, so I know things are going as expected. 
+| **Feature**                 | **Description**                                                                                                                                         | **Example**                             |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| **Efficiency**              | Both adding and updating leads are designed to be quick, with minimal fields to fill and optional inputs, such as company name, that can be skipped.    | ![Example](images/example-optional.png) |
+| **Clear Feedback**          | The program provides instant feedback, indicating if an email already exists, if the associated company is in the sales list, or if actions succeeded. | ![Example](images/example-feedback.png) |
+| **Action Confirmation**     | Success messages confirm completed actions with concise text and an emoji for easy recognition.                                                        | ![Example](images/example-success.png)  |
+| **Relevant Information Only** | When updating leads, the program displays only essential details, such as current status and notes, reducing distractions.                           | ![Example](images/example-information.png) |
+| **Clear Error Messages**    | Error messages use emojis to make failures immediately clear, along with explanations and guidance on resolving the issue.                             | ![Example](images/example-error.png)    |
+| **Feedback After Every Action** | Updates to status and notes are confirmed separately, ensuring transparency and control through the entire process.                                  | ![Example](images/example-status.png)  |
 
 ### Colorama
 
-I use colorama for a better user experience... Cyan is for basic messages, green is for something good, red is for something "bad" (something didn't go as planned). Explan how I installed colorama etc. I don't want to waste time reading to much so I'm happy just to look at a color and see if it went as I wanted or not.
+Colorama is used in this program to enhance user experience by adding color-coded feedback to the terminal. This makes it easier to distinguish between different types of messages, helping users quickly understand the program’s output.
+
+| **Color** | **Description** |
+| --------- | --------------- |
+| **Cyan** | Used for all program prompts to differentiate them from user inputs, ensuring clarity and a smooth interaction experience. | 
+| **Green** | Indicates successful actions, such as adding or updating leads. | 
+| **Red** | Highlights errors or issues that need attention, such as duplicate emails or invalid inputs. | 
+
+#### Installation of Colorama
+
+Colorama was installed using the following command, as outlined in the [official Colorama documentation](https://pypi.org/project/colorama/):
+
+```pip install colorama```
+
+And import colors and styling to run.py with:
+
+```from colorama import Fore, Back, Style```
+
+This simple installation allowed for immediate access to Colorama’s features, making it easy to implement clear, color-coded messages throughout the program.
 
 # Program Structure
 
-The program is structured with API integration to Notion. A class and methods to handle leads and a main function to handle.... more information below.
+The program is built around a Notion API integration, a Lead class for managing data, and a main function that serves as the entry point for user interaction. Below, I'll describe the key components of the program, highlight their functionality, and include code snippets for better understanding.
 
 ## Notion API
 
-Explain how this works, link to the page where I was guided.
+The program uses the [Notion API](https://github.com/ramnes/notion-sdk-py) to interact with two separate databases:
+
+1. Leads database: Stores information about potential leads (email, status, company, and notes).
+2. Company sales list database: Tracks companies we already work with to avoid redundancies.
+
+Example of setting up the Notion client:
 
 ## Lead Class
 
