@@ -506,6 +506,8 @@ During development, I encountered a few challenges:
 | --------- | --------------- | ------------ |
 | **Handling Loops in the Main Function** | I needed the program to loop back to specific points after errors, or back to start, e. g., when not wanting to add notes. | To achieve this, I implemented nested loops and a recursive call to main() within the loop to return to the starting point. While this solution works, it feels suboptimal and somewhat clunky since calling the main function within itself isn't the cleanest approach. It's functional for now but could benefit from a more elegant solution in the future. |
 | **Formatting Message Repetition** | Initial implementation repeated formatting logic for every message. | Created the ```format_text``` function to simplify message styling. | 
+| **Notion Select Type Issue** | Notion uses two types of select fields, one "select" and one "status". The program was trying to update with the wrong type, causing an error. | Updated the code to use the "status" type for the Notion select field. | 
+
 
 # Tools and Technologies
 
@@ -516,23 +518,30 @@ During development, I encountered a few challenges:
 ## Libraries
 
 - **json**<br>Parses the `creds.json` file to extract Notion API credentials securely.
+
 - **notion_client**<br>Facilitates interaction with the Notion API, enabling CRUD (Create, Read, Update, Delete) operations in Notion databases. Documentation: [Notion SDK for Python](https://github.com/ramnes/notion-sdk-py).
+
 - **re**<br>Validates email addresses to ensure data integrity and prevent invalid entries in the database. Documentation: [re library](https://docs.python.org/3/library/re.html). 
+
 - **datetime**<br>Tracks and records the date of the latest interaction with leads for accurate updates. Documentation: [datetime](https://docs.python.org/3/library/datetime.html). 
+
 - **colorama**<br>Enhances the terminal interface by adding color-coded feedback, making user interactions more intuitive. Documentation: [colorama](https://pypi.org/project/colorama/). 
 
 ## Development Tools
 
 - **Gitpod**<br>Used for writing and testing the Python code in an online IDE environment.
+
 - **GitHub**<br>For version control and repository management throughout the development process.
+
 - **Heroku**<br>Deployed the program to Heroku for easy online access and testing.
 
 ## Other Tools
 
 - **Notion**<br>The core database platform integrated with the project, serving as the leads database and company sales list for email tracking and management.
-- **Python Interpreter**<br>Used locally for testing the program before deployment to Heroku.
-- **Adobe XD**<br>Utilized to design the project’s flowchart, visually representing the program's logic and workflows.
 
+- **Python Interpreter**<br>Used locally for testing the program before deployment to Heroku.
+
+- **Adobe XD**<br>Utilized to design the project’s flowchart, visually representing the program's logic and workflows.
 
 # Testing
 
