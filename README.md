@@ -515,7 +515,7 @@ During development, I encountered a few challenges:
 
 ## Libraries
 
-- **json**<br>Parses the ```creds.json``` file to extract Notion API credentials securely.
+- **json**<br>Parses the `creds.json` file to extract Notion API credentials securely.
 - **notion_client**<br>Facilitates interaction with the Notion API, enabling CRUD (Create, Read, Update, Delete) operations in Notion databases. Documentation: [Notion SDK for Python](https://github.com/ramnes/notion-sdk-py).
 - **re**<br>Validates email addresses to ensure data integrity and prevent invalid entries in the database. Documentation: [re library](https://docs.python.org/3/library/re.html). 
 - **datetime**<br>Tracks and records the date of the latest interaction with leads for accurate updates. Documentation: [datetime](https://docs.python.org/3/library/datetime.html). 
@@ -563,16 +563,28 @@ To evaluate whether the program meets the goals and requirements outlined earlie
 
 ## Input Testing 
 
-- Test for inputs:
-    - Things to test:
-    - a letter `a`
-    - multiple letters `abc`
-    - a number `1`
-    - multiple numbers `123`
-    - an empty ENTER with nothing `ENTER`
-    - only spaces
-    - special characters `?` `!` `@`
-    - `isalpha()` , `isnumeric()` , `isalphanum()`
+This program has a total of xx user inputs. Each input has been tested according to the list below. The test results are below.
+
+**Validation Test for Inputs:**
+- a letter `a`
+- multiple letters `abc`
+- a number `1`
+- multiple numbers `123`
+- an empty ENTER with nothing `ENTER`
+- only spaces
+- special characters `?` `!` `@`
+
+| Input | Purpose | Expected Behavior | Outcome | Validation Passed? | Screenshot | 
+| ------- | ---------- | ---------- | ---------- | ---------- | ---------- | 
+| **Input 1: Add or update lead** | Input that asks if the user wants to add or update a lead | Only accept  `add` or `update`. All other inputs should give error. | ✅ Works as expected | ✅ Yes | ![Input 1](images/input-1-error.png) | 
+| **Input 2: Enter email** | Collect the email address for the lead | Must include `@` and `.`, no spaces, special characters, or invalid formats. Test through re library. | ✅ Works as expected | ✅ Yes | ![Input 2](images/input-2-error.png) | 
+| **Input 3: Enter company name** | Collect an optional company name | Accept all characters, including special characters and numbers. `ENTER` skips input. | ✅ Works as expected | ✅ Yes | ![Input 3](images/input-3-error.png) | 
+| **Input 4: Enter notes** | Ask if the user wants to update the status or notes of an existing lead | Accept any input. No restrictions. `ENTER` skips input. | ✅ Works as expected | ✅ Yes | ![Input 4](images/input-4-error.png) | 
+| **Input 5: Update status or notes** | Input that asks if the user wants to add or update a lead | Only accept `status` or `notes`. All other inputs should give an error. | ✅ Works as expected | ✅ Yes | ![Input 5](images/input-5-error.png) | 
+| **Input 6: Enter new status** | Update the status of an existing lead | Accept only predefined statuses (e.g., `Not sent`, `Meeting`). | ✅ Works as expected | ✅ Yes | ![Input 6](images/input-6-error.png) | 
+| **Input 7: Add or replace notes** | Ask if the user wants to add or replace existing notes | Only accept `add` or `replace`. All other inputs should give an error. | ✅ Works as expected | ✅ Yes | ![Input 7](images/input-7-error.png) | 
+| **Input 8: Enter new notes** | Add or replace notes for an existing lead | Accept any input. No restrictions. | ✅ Works as expected | ✅ Yes | ![Input 8](images/input-8-error.png) | 
+
 
 ## Known Bugs and Limitations
 
