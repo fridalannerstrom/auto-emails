@@ -171,11 +171,14 @@ def main():
 
                 # Ask for company and check company sales list
                 company = input(format_text("Enter company name (optional):\n", color="cyan")).strip()
-                if company and lead_manager.is_company_in_sales_list(company):
-                    print(format_text(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.", color="red"))
-                    continue
-                else:
-                    print(format_text(f"Good to go! '{company}' is not in the sales list.", color="green"))
+
+                # Only run the company check if a company is provided
+                if company:
+                    if company and lead_manager.is_company_in_sales_list(company):
+                        print(format_text(f"🔴 Company '{company}' is already in the sales list. Cannot add this email.", color="red"))
+                        continue
+                    else:
+                        print(format_text(f"Good to go! '{company}' is not in the sales list.", color="green"))
 
                 # Ask for notes and add lead
                 notes = input(format_text("Enter notes (optional):\n", color="cyan")).strip()
