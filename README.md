@@ -194,9 +194,6 @@ This requirements list outlines the specific functionality and features that thi
 | **Efficient Database Loading** | The program must bypass Notion’s "load more" limitation by directly querying the full database via the API. |
 | **Seamless Database Switching** | If a company check is required, the program must automatically switch to the company sales list database and return to the leads database afterward. |
 | **Predefined Status Options** | The program must restrict status updates to a fixed set of options (e.g., "Not Sent," "E-mail 1," "Meeting Booked") to maintain data consistency. |
-| **Minimal User Interaction** | If the user inputs an invalid email, status, or note action, the program must display a clear error message and prompt the user to retry. |
-| **Prevent Duplicate Companies** | The program must prevent users from adding leads whose companies are already in the sales list database. |
-| **Error Handling for Inputs** | If the user inputs an invalid email, status, or note action, the program must display a clear error message and prompt the user to retry. |
 
 ## Flowchart
 
@@ -309,13 +306,20 @@ The program is designed to prioritize speed, clarity, and precision for both add
 
 ### Colorama
 
-Colorama is used in this program to enhance user experience by adding color-coded feedback to the terminal. This makes it easier to distinguish between different types of messages, helping users quickly understand the program’s output.
+Colorama is an integral part of this program, enhancing the user experience with color-coded feedback in the terminal. It helps users quickly identify messages by their type, ensuring clarity and reducing confusion during interactions. In addition to colors, I use emojis to emphasize the success or failure of actions, making feedback both functional and visually intuitive.
+
+#### Colors
 
 | **Color** | **Description** |
 | --------- | --------------- |
-| **Cyan** | Used for all program prompts to differentiate them from user inputs, ensuring clarity and a smooth interaction experience. | 
-| **Green** | Indicates successful actions, such as adding or updating leads. | 
-| **Red** | Highlights errors or issues that need attention, such as duplicate emails or invalid inputs. | 
+| **Cyan** | Used for all program prompts to differentiate them from user inputs, this ensures the program’s messages are easily identifiable. | 
+| **Green** | Indicates successful actions, such as adding a lead to the database or confirming that a company is not in the sales list. | 
+| **Red** | Highlights errors or unexpected outcomes, such as duplicate emails or invalid inputs. | 
+
+#### Emoji Usage
+
+🟢 **Green Circle:** Used in success messages to confirm that an expected action was completed, such as adding a new lead successfully.
+🔴 **Red Circle:** Always paired with error messages to signify that an expected action did not occur.
 
 #### Installation of Colorama
 
@@ -326,6 +330,8 @@ Colorama was installed using the following command, as outlined in the [official
 And import colors and styling to run.py with:
 
 ```from colorama import Fore, Back, Style```
+
+I also ensured the Colorama library was included in the ```requirements.txt``` file, which was necessary for deploying the program on Heroku. This allows the program to run smoothly in the cloud environment.
 
 This simple installation allowed for immediate access to Colorama’s features, making it easy to implement clear, color-coded messages throughout the program.
 
@@ -497,36 +503,36 @@ print(format_text("Error message", color="red"))
 During development, I encountered a few challenges:
 
 | **Issue** | **Description** | **Solution** |
-| --------- | --------------- |
-| **Handling Loops in the Main Function** | I needed the program to loop back to specific points after errors, e. g., when not wanting to add notes. without restarting. | 
-| **Green** | Indicates successful actions, such as adding or updating leads. | 
-| **Red** | Highlights errors or issues that need attention, such as duplicate emails or invalid inputs. | 
+| --------- | --------------- | ------------ |
+| **Handling Loops in the Main Function** | I needed the program to loop back to specific points after errors, or back to start, e. g., when not wanting to add notes. | To achieve this, I implemented nested loops and a recursive call to main() within the loop to return to the starting point. While this solution works, it feels suboptimal and somewhat clunky since calling the main function within itself isn't the cleanest approach. It's functional for now but could benefit from a more elegant solution in the future. |
+| **Formatting Message Repetition** | Initial implementation repeated formatting logic for every message. | Created the ```format_text``` function to simplify message styling. | 
 
 # Tools and Technologies
 
 ## Languages
 
-Python only
+- **Python**<br>The sole programming language used in this project.
 
 ## Libraries
 
-json: Parses the creds.json file to extract Notion API credentials.
-notion_client: Facilitates interaction with the Notion API, enabling CRUD operations in Notion databases.
-re: Validates email addresses to ensure data integrity.
-datetime: Tracks the date of the last interaction with leads.
-colorama: Enhances the terminal interface with colored and styled text.
+- **json**<br>Parses the ```creds.json``` file to extract Notion API credentials securely.
+- **notion_client**<br>Facilitates interaction with the Notion API, enabling CRUD (Create, Read, Update, Delete) operations in Notion databases. Documentation: [Notion SDK for Python](https://github.com/ramnes/notion-sdk-py).
+- **re**<br>Validates email addresses to ensure data integrity and prevent invalid entries in the database. Documentation: [re library](https://docs.python.org/3/library/re.html). 
+- **datetime**<br>Tracks and records the date of the latest interaction with leads for accurate updates. Documentation: [datetime](https://docs.python.org/3/library/datetime.html). 
+- **colorama**<br>Enhances the terminal interface by adding color-coded feedback, making user interactions more intuitive. Documentation: [colorama](https://pypi.org/project/colorama/). 
 
 ## Development Tools
 
-Gitpod, Github, Heroku
+- **Gitpod**<br>Used for writing and testing the Python code in an online IDE environment.
+- **GitHub**<br>For version control and repository management throughout the development process.
+- **Heroku**<br>Deployed the program to Heroku for easy online access and testing.
 
 ## Other Tools
 
-Notion: The core database platform integrated with the project, enabling lead management and email tracking.
+- **Notion**<br>The core database platform integrated with the project, serving as the leads database and company sales list for email tracking and management.
+- **Python Interpreter**<br>Used locally for testing the program before deployment to Heroku.
+- **Adobe XD**<br>Utilized to design the project’s flowchart, visually representing the program's logic and workflows.
 
-Python Interpreter: Used to run and test the Python program locally.
-
-Adobe XD for Flowchart
 
 # Testing
 
@@ -536,7 +542,24 @@ PEP test thing
 
 ## Workflow Testing
 
-Test if the program does what I wanted in the start? My list of requirements and wished from the start?
+To evaluate whether the program meets the goals and requirements outlined earlier, we conducted a thorough review of each feature. Below is a detailed checklist of the requirements, descriptions, and whether the program successfully implemented them.
+
+| Requirement | Description | Implemented Successfully? | 
+| ------- | ---------- | ---------- | 
+| **Notion API Integration** | Use the Notion API to interact with two separate databases (leads and company sales list). This includes searching, retrieving, adding, and updating data efficiently. | ✅ Yes | 
+| **Add New Leads** | The program must allow the user to input a new email address, company name, and optional notes, and add these to the leads database. | ✅ Yes | 
+| **Duplicate Email Check** | Before adding a new email, the program must automatically search the leads database for the email. If the email is there, don't add the email to leads database. | ✅ Yes | 
+| **Block Invalid Emails** | Validate email addresses using a predefined format and reject invalid entries with a clear error message. | ✅ Yes | 
+| **Handle Optional Company Input** | Allow the user to optionally input a company name when adding a new lead, and verify against the company sales list database if provided. |✅ Yes | 
+| **Company Sales List Check** | The program must automatically search the company sales list database to check if the lead’s company is already a customer. If it is, don't add the email to leads database. | ✅ Yes | 
+| **Update Lead Status** | The program must allow users to update the status field of a lead with predefined options. | ✅ Yes | 
+| **Update Notes** | The program must provide an option to either add to or completely replace the notes field for an existing lead. | ✅ Yes | 
+| **Immediate Feedback** | After every action, the program must display a message confirming success or failure. | ✅ Yes | 
+| **Error Handling for Inputs** | If the user inputs an invalid email, status, or note action, the program must display a clear error message and prompt the user to retry. | ✅ Yes | 
+| **Date Auto-Update** | When updating a lead's status, the program must automatically update the "Latest Contact" field with the current date. | ✅ Yes | 
+| **Efficient Database Loading** | The program must bypass Notion’s "load more" limitation by directly querying the full database via the API. | ✅ Yes | 
+| **Seamless Database Switching** | If a company check is required, the program must automatically switch to the company sales list database and return to the leads database afterward. | ✅ Yes | 
+| **Predefined Status Options** | The program must restrict status updates to a fixed set of options (e.g., "Not Sent," "E-mail 1," "Meeting Booked") to maintain data consistency. | ✅ Yes | 
 
 ## Input Testing 
 
