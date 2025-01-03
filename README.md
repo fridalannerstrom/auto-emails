@@ -507,6 +507,7 @@ During development, I encountered a few challenges:
 | **Handling Loops in the Main Function** | I needed the program to loop back to specific points after errors, or back to start, e. g., when not wanting to add notes. | To achieve this, I implemented nested loops and a recursive call to main() within the loop to return to the starting point. While this solution works, it feels suboptimal and somewhat clunky since calling the main function within itself isn't the cleanest approach. It's functional for now but could benefit from a more elegant solution in the future. |
 | **Formatting Message Repetition** | Initial implementation repeated formatting logic for every message. | Created the ```format_text``` function to simplify message styling. | 
 | **Notion Select Type Issue** | Notion uses two types of select fields, one "select" and one "status". The program was trying to update with the wrong type, causing an error. | Updated the code to use the "status" type for the Notion select field. | 
+| **Repetitive Notes Code** | The handling of notes appears in two places: one after updating the status and another when adding notes directly. This results in repetitive code. | A potential solution is to create a dedicated function or method for managing notes, which can be reused in both scenarios to improve maintainability and reduce redundancy. However, this has not yet been implemented in the current version of the program. | 
 
 
 # Tools and Technologies
@@ -542,6 +543,8 @@ During development, I encountered a few challenges:
 - **Python Interpreter**<br>Used locally for testing the program before deployment to Heroku.
 
 - **Adobe XD**<br>Utilized to design the project’s flowchart, visually representing the program's logic and workflows.
+
+- **ChatGPT**<br>Assisted in debugging, troubleshooting, and explaining unexpected behavior. Also provided guidance on best practices and solutions for cleaner, more efficient, and maintainable code.
 
 # Testing
 
