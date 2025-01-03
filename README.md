@@ -335,28 +335,172 @@ The program is built around a Notion API integration, a Lead class for managing 
 
 ## Notion API
 
-The program uses the [Notion API](https://github.com/ramnes/notion-sdk-py) to interact with two separate databases:
+The program uses the Notion API to interact with two separate databases. I integrated it into my program by following the [Notion Developers Get Started Guide](https://developers.notion.com/docs/getting-started)  and utilizing the [Notion API library](https://github.com/ramnes/notion-sdk-py). 
 
-1. Leads database: Stores information about potential leads (email, status, company, and notes).
-2. Company sales list database: Tracks companies we already work with to avoid redundancies.
+``` 
+from notion_client import Client
 
-Example of setting up the Notion client:
+Initialize Notion client
+notion = Client(auth=creds["NOTION_TOKEN"]) 
+```
+The Notion token is stored in ```creds.json```, which is hidden for privacy reasons.
 
 ## Lead Class
 
-Explan the lead class and why I chose to do this. Show before and after code.
+The Lead class encapsulates the logic for managing leads. It interacts with the Notion API to perform CRUD (Create, Read, Update, Delete) operations.
+
+**Why use a class?**<br> It keeps the code modular and reusable, and aldo encapsulates lead-specific logic (e.g., validation, database queries).
+
+### Code Example: Adding a New Lead
+
+``` 
+def create(self, email, company=None, notes=None):
+    properties = {
+        "E-mail": {"title": [{"text": {"content": email}}]},
+    }
+    if company:
+        properties["Company"] = {"rich_text": [{"text": {"content": company}}]}
+    if notes:
+        properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
+    
+    self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
+    print(format_text(f"🟢 Success! Lead '{email}' added to the database.", color="green"))
+``` 
+
+### Functions vs Class
+
+Initially, I structured my program using standalone functions to handle email validation, database queries, and updates. While this approach worked, it quickly became evident that managing multiple related functions was inefficient and repetitive. By switching to a class-based approach, I consolidated related functionality, improved code readability, and enhanced maintainability.
+
+#### **Initial Approach: Standalone Functions**
+
+Below is an example of how I initially managed the functionality using separate functions:
+
+```
+def is_valid_email(email):
+    """Check if email is valid."""
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return bool(re.match(pattern, email))
+
+def find_email_in_database(email):
+    """Check if email exists in the email database."""
+    response = notion.databases.query(database_id=database_id)
+    for page in response["results"]:
+        properties = page["properties"]
+        if properties["E-mail"]["title"][0]["text"]["content"] == email:
+            return page["id"]
+    return None
+
+def add_email_to_database(email, company=None, notes=None):
+    """Add email to database."""
+    properties = {
+        "E-mail": {"title": [{"text": {"content": email}}]},
+    }
+    if company:
+        properties["Company"] = {"rich_text": [{"text": {"content": company}}]}
+    if notes:
+        properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
+
+    notion.pages.create(
+        parent={"database_id": database_id},
+        properties=properties,
+    )
+    print(f"🟢 Success! '{email}' has been added to the database.")
+```
+
+While functional, this approach caused repetitive code, making it harder to maintain or scale as new features were added.
+
+----
+
+#### **Improved Approach: Class-Based**
+
+By introducing a  ```Lead``` class, I encapsulated all lead-related operations into a single structure, improving organization and reducing redundancy.
+
+``` 
+ class Lead:
+    """Manages lead data stored in the Notion database."""
+
+    def __init__(self, notion_client, database_id, company_database_id):
+        self.notion = notion_client
+        self.database_id = database_id
+        self.company_database_id = company_database_id
+
+    def is_valid_email(self, email):
+        """Validate the format of an email address."""
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        return bool(re.match(pattern, email))
+
+    def find_by_email(self, email):
+        """Search for a lead in the database by their email."""
+        response = self.notion.databases.query(database_id=self.database_id)
+        for page in response["results"]:
+            if page["properties"]["E-mail"]["title"][0]["text"]["content"].lower() == email.lower():
+                return page
+        return None
+
+    def create(self, email, company=None, notes=None):
+        """Add a new lead to the database."""
+        properties = {
+            "E-mail": {"title": [{"text": {"content": email}}]},
+        }
+        if company:
+            properties["Company"] = {"rich_text": [{"text": {"content": company}}]}
+        if notes:
+            properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
+
+        self.notion.pages.create(
+            parent={"database_id": self.database_id},
+            properties=properties,
+        )
+        print(f"🟢 Success! Lead '{email}' added to the database.")
+```
+
+----
+
+#### Outcome
+
+Switching to a class-based code not only simplified the structure but also ensured the program could be extended more easily in the future. For example, methods like ```find_by_email```, ```is_company_in_sales_list```, and ```update_notes``` are now part of the ```Lead``` class, providing a cohesive way to interact with leads.
 
 ## Main function
 
-Explain how the main function is set up, and how it works with the methods. Maybe also talk about how this could be improved?
+The ```main()``` function handles the user interaction loop. It allows users to add leads (prompts for email, company, and optional notes) and update leads (lets users modify the status or notes of an existing lead).
+
+**Flow Example in ```main():```**
+
+```
+action = input(format_text("Do you want to add or update email? (add/update):\n", color="cyan")).strip().lower()
+if action == "add":
+    email = input(format_text("Enter email:\n", color="cyan")).strip()
+    if lead_manager.is_valid_email(email):
+        # Add lead logic
+elif action == "update":
+    email = input(format_text("Enter email:\n", color="cyan")).strip()
+    if lead_manager.find_by_email(email):
+        # Update lead logic
+```
 
 ## Other
 
-Function to handle formatting on messages, because there is so many messages and it was repetativ to formatt every one (show before and after)
+To avoid repetition, a function ```format_text``` was created for formatting messages in the terminal. This ensures consistent color coding and bold styling.
+
+**Before:**
+```
+print("\033[1m" + Fore.RED + "Error message" + Style.RESET_ALL + "\033[0m")
+```
+
+**After:**
+```
+print(format_text("Error message", color="red"))
+```
 
 ## Issues
 
-Trouble with notes loop, wanting to loop back to the main function when I'm deep in a loop. I solved this by getting function main inside the loop. Not so clean but it works...
+During development, I encountered a few challenges:
+
+| **Issue** | **Description** | **Solution** |
+| --------- | --------------- |
+| **Handling Loops in the Main Function** | I needed the program to loop back to specific points after errors, e. g., when not wanting to add notes. without restarting. | 
+| **Green** | Indicates successful actions, such as adding or updating leads. | 
+| **Red** | Highlights errors or issues that need attention, such as duplicate emails or invalid inputs. | 
 
 # Tools and Technologies
 
