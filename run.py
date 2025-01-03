@@ -231,7 +231,7 @@ def main():
                                         main()
                                         break
                                     else:
-                                        print(format_text("🔴 Invalid choice for notes. Please try again.", color="red"))
+                                        print(format_text("🔴 Invalid choice for notes. Please choose 'add' or 'replace'.", color="red"))
                                 break
                             elif add_notes == "no":
                                 print(format_text("No notes were added or updated.", color="cyan"))
@@ -254,7 +254,7 @@ def main():
                                 main()
                                 break
                             else:
-                                print(format_text("🔴 Invalid choice for notes. Please try again.", color="red"))
+                                print(format_text("🔴 Invalid choice for notes. Please choose 'add' or 'replace'.", color="red"))
                                 note_action = None  # Reset note_action to stay in the loop
                         break
 
