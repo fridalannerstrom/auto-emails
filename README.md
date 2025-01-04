@@ -514,7 +514,9 @@ During development, I encountered a few challenges:
 
 ## Languages
 
-- **Python**<br>The sole programming language used in this project.
+- **Python**<br>The main programming language used in this project.
+
+- **HTML, CSS, JavaScript**<br>Provided from the [Code Institute P3 Template](https://github.com/Code-Institute-Org/p3-template).
 
 ## Libraries
 
@@ -626,14 +628,48 @@ To improve accuracy and save time, the program could be extended to automaticall
 
 # Deployment
 
-## Local Deployment
+## Verson Control
 
-## Github Deployment
+This project utilizes Git and Gitpod for version control and to push code to the main repository. To maintain a clear and organized commit history, the project follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+
+The following commit types are used in this project to describe changes:
+
+| Commit Type | Purpose | 
+| ----- | ------- |
+| **feat** | Adding a new feature to the program. |
+| **fix** | Resolving bugs or errors in the code. | 
+| **refactor** | Improving the structure of the code, such as cleaning up, adding comments, or making changes that don't alter the program's functionality. | 
+| **doc** | Updating documentation, including README, comments, or any other non-code-related updates. | 
+
+## Page Deployment
+
+This project was deployed to [Heroku CLI](https://www.heroku.com/). The steps to deploy are as follows: 
+
+- Create an account at [Heroku](https://www.heroku.com/)
+- Click `New` to create a new app from the dashboard.
+- Choose a unique name for the app and select your region. Then click  `Create app`.
+- Go to `Settings` and navigate to `Config Vars`.
+- Add the following information:
+`KEY = PORT : VALUE = 8000`
+- Navigate to buildpacks and add `Python` and `NodeJS` is this order.
+- Click `Deploy Branch`.
+- Scroll to `Deployment Method` and select `Github`.
+- Scroll down to `Deploy`. For this project, the automatic deploys was selected.
+- Done!
+
+See the deployed program here: [Notion Lead Manager](https://auto-emails-e92e0f29caf5.herokuapp.com/) 
 
 # Credits
 
 ## Content
 
+- **ChatGPT**<br>Utilized to assist with generating and refining text for this README.
+
 ## Other
 
+- **Code Institute**<br>Provided a template that helped establish the program's user interface - [Code Institute P3 Template](https://github.com/Code-Institute-Org/p3-template).
+
 ## Acknowledgements
+
+- A huge thank you to my mentor, [Rory Patrick](https://github.com/Ri-Dearg), for providing invaluable guidance throughout this project.
+- Special thanks to [Code Institute](https://codeinstitute.net/), particularly the "Love Sandwiches" project, for helping me get started with Python and guiding me through the project process. 
