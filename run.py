@@ -215,7 +215,7 @@ class Lead:
             ).strip().lower()
 
             # Check if user wants to skip back to start
-            check_for_skip(action)
+            check_for_skip(add_notes)
 
             if add_notes == "yes":
                 print(format_text(
@@ -267,6 +267,7 @@ class Lead:
                         color="red",
                     )
                 )
+
 
 def check_for_skip(input_value):
     """
