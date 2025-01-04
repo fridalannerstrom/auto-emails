@@ -697,6 +697,7 @@ The following commit types are used in this project to describe changes:
 
 This project was deployed to [Heroku CLI](https://www.heroku.com/). The steps to deploy are as follows: 
 
+- Fork or clone this repository.
 - Create an account at [Heroku](https://www.heroku.com/)
 - Click `New` to create a new app from the dashboard.
 - Choose a unique name for the app and select your region. Then click  `Create app`.
