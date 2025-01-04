@@ -268,8 +268,8 @@ def main():
         company_database_id=COMPANY_DATABASE_ID,
     )
 
-    while True:
-        action = input(
+    while True:  # Infinite loop to keep this running
+        action = input(           
             format_text(
                 "Let's get started! Do you want to add or update email? "
                 "(add/update):\n",
@@ -286,10 +286,10 @@ def main():
             )
             continue
 
-        while True:
+        while True:  # Loop for email input
             email = input(format_text("Enter email:\n", color="cyan")).strip()
 
-            if not lead_manager.is_valid_email(email):
+            if not lead_manager.is_valid_email(email): # Check if email is valid
                 print(
                     format_text(
                         f"🔴 Email '{email}' is not valid. "
@@ -300,7 +300,7 @@ def main():
                 continue
 
             if action == "add":
-                if lead_manager.find_by_email(email):
+                if lead_manager.find_by_email(email): # Check if email is in database
                     print(
                         format_text(
                             f"🔴 Email '{email}' already exists in "
@@ -323,8 +323,8 @@ def main():
                         color="cyan")
                 ).strip()
 
-                if company:
-                    if lead_manager.is_company_in_sales_list(company):
+                if company:  # Only run the company check if a company is provided
+                    if lead_manager.is_company_in_sales_list(company): 
                         print(
                             format_text(
                                 f"🔴 Company '{company}' is already in "
@@ -348,7 +348,7 @@ def main():
                 break
 
             elif action == "update":
-                page = lead_manager.find_by_email(email)
+                page = lead_manager.find_by_email(email) # Check if email is in database
 
                 if not page:
                     print(
@@ -414,14 +414,14 @@ def main():
                         break
 
                     elif update_action == "notes":
-                        current_notes = (
+                        current_notes = ( 
                             "".join(
                                 [
                                     text["text"]["content"]
                                     for text in page["properties"][
                                             "Notes"
                                             ]["rich_text"]
-                                ]
+                                ] # Get the current notes in database
                             )
                             if "Notes" in page["properties"]
                             and page["properties"]["Notes"]["rich_text"]
