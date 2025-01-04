@@ -1,10 +1,12 @@
-# Streamlining Sales Email Management in Notion ✉️
+# Streamlining Leads Management in Notion ✉️
 
-Welcome to my project for simplifying email management in Notion!
+Welcome to my project for simplifying leads management in Notion!
 
-I work at a B2B company where I support the sales team by collecting leads, sending tailored emails, and tracking follow-ups to book meetings. While I rely on Notion to manage these workflows, it often feels clunky and slow, especially with large datasets.
+Managing leads effectively is crucial in my role at a B2B company, where I support the sales team by collecting leads, crafting tailored emails, and tracking follow-ups to secure meetings. While Notion serves as our primary tool for managing these workflows, handling large datasets often feels cumbersome and slow.
 
-To simplify and speed up my workflow, I developed a Python tool to streamline email list management. It’s made handling sales emails smoother, more efficient, and far less repetitive — saving me time and eliminating daily frustrations.
+To address these challenges, I developed a Python-based solution designed to simplify and accelerate my workflow. This program streamlines the management of leads—email lists of professionals working in companies that match our target group—and makes the process of handling sales emails smoother, more efficient, and far less repetitive.
+
+With this tool, I’ve saved significant time, reduced frustration, and transformed a clunky process into a seamless and productive experience. Whether you're in sales or simply looking for inspiration to optimize your own workflows, I hope this project serves as a helpful example.
 
 # Table of content
 
