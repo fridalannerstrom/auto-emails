@@ -2,11 +2,11 @@
 
 Welcome to my project for simplifying leads management in Notion!
 
-Managing leads effectively is crucial in my role at a B2B company, where I support the sales team by collecting leads, crafting tailored emails, and tracking follow-ups to secure meetings. While Notion serves as our primary tool for managing these workflows, handling large datasets often feels cumbersome and slow.
+I work at a B2B company, where I support the sales team by collecting leads, crafting tailored emails, and tracking follow-ups to book meetings. While Notion serves as our primary tool for managing these workflows, handling large datasets often feels cumbersome and slow.
 
-To address these challenges, I developed a Python-based solution designed to simplify and accelerate my workflow. This program streamlines the management of leads—email lists of professionals working in companies that match our target group—and makes the process of handling sales emails smoother, more efficient, and far less repetitive.
+To address these challenges, I developed a Python-based solution designed to simplify and accelerate my workflow. This program streamlines the management of leads — emails of professionals working in companies that match our target group — and makes the process of handling leads smoother, more efficient, and far less repetitive.
 
-With this tool, I’ve saved significant time, reduced frustration, and transformed a clunky process into a seamless and productive experience. Whether you're in sales or simply looking for inspiration to optimize your own workflows, I hope this project serves as a helpful example.
+With this tool, I’ve saved significant time, reduced frustration, and transformed a clunky process into a seamless and productive experience.
 
 # Table of content
 
@@ -19,14 +19,16 @@ With this tool, I’ve saved significant time, reduced frustration, and transfor
 2. [Project Overview](#project-overview)
     - [Requirements](#requirements)
     - [Flowchart](#flowchart)
-    - [Key Features](#key-features) (berätta vad man faktiskt kan göra i programmet)
+    - [Key Features](#key-features)
     - [How To Use The Program](#how-to-use-the-program)
-    - [User Experience](#user-experience) (prata om colorama, att jag vill ha tydliga färger eftersom jag jobbar snabbt osv... berätta om hur jag valt att lägga upp feedbacken osv) 
+    - [User Experience](#user-experience)
 
 2. [Program Structure](#program-structure)
     - [Notion API Integration](#notion-api-integration)
     - [Lead Class](#lead-class)
     - [Main Function](#main-function)
+    - [Other](#other)
+    - [Issues](#Issues)
 
 3. [Tools and Technologies](#tools-and-technologies)
     - [Languages](#languages)
@@ -44,14 +46,15 @@ With this tool, I’ve saved significant time, reduced frustration, and transfor
     - [Automated Email Sending](#automated-email-sending)
     - [Integration with CRM Systems](#integration-with-crm-systems)
     - [Automated Reminders](#automated-reminders)
+    - [Automatic Update of Latest Contact Date](#automatic-update-of-latest-contact-date)
 
 6. [Deployment](#deployment)
-    - [Local Deployment](#local-deployment)
-    - [GitHub Deployment](#github-deployment)
+    - [Verson Control](#verson-control)
+    - [Page Deployment](#page-deployment)
 
 7. [Credits](#credits)
     - [Content](#content)
-    - [Other](#other)
+    - [Other Credits](#other-credits)
     - [Acknowledgements](#acknowledgements)
 
 # Introduction
@@ -320,20 +323,20 @@ Colorama is an integral part of this program, enhancing the user experience with
 
 #### Emoji Usage
 
-🟢 **Green Circle:** Used in success messages to confirm that an expected action was completed, such as adding a new lead successfully.
+🟢 **Green Circle:** Used in success messages to confirm that an expected action was completed, such as adding a new lead successfully.<br>
 🔴 **Red Circle:** Always paired with error messages to signify that an expected action did not occur.
 
 #### Installation of Colorama
 
 Colorama was installed using the following command, as outlined in the [official Colorama documentation](https://pypi.org/project/colorama/):
 
-```pip install colorama```
+`pip install colorama`
 
 And import colors and styling to run.py with:
 
-```from colorama import Fore, Back, Style```
+`from colorama import Fore, Back, Style`
 
-I also ensured the Colorama library was included in the ```requirements.txt``` file, which was necessary for deploying the program on Heroku. This allows the program to run smoothly in the cloud environment.
+I also ensured the Colorama library was included in the `requirements.txt` file, which was necessary for deploying the program on Heroku. This allows the program to run smoothly in the cloud environment.
 
 This simple installation allowed for immediate access to Colorama’s features, making it easy to implement clear, color-coded messages throughout the program.
 
@@ -341,7 +344,7 @@ This simple installation allowed for immediate access to Colorama’s features, 
 
 The program is built around a Notion API integration, a Lead class for managing data, and a main function that serves as the entry point for user interaction. Below, I'll describe the key components of the program, highlight their functionality, and include code snippets for better understanding.
 
-## Notion API
+## Notion API Integration
 
 The program uses the Notion API to interact with two separate databases. I integrated it into my program by following the [Notion Developers Get Started Guide](https://developers.notion.com/docs/getting-started)  and utilizing the [Notion API library](https://github.com/ramnes/notion-sdk-py). 
 
@@ -351,7 +354,7 @@ from notion_client import Client
 Initialize Notion client
 notion = Client(auth=creds["NOTION_TOKEN"]) 
 ```
-The Notion token is stored in ```creds.json```, which is hidden for privacy reasons.
+The Notion token is stored in `creds.json`, which is hidden for privacy reasons.
 
 ## Lead Class
 
@@ -421,7 +424,7 @@ While functional, this approach caused repetitive code, making it harder to main
 
 #### **Improved Approach: Class-Based**
 
-By introducing a  ```Lead``` class, I encapsulated all lead-related operations into a single structure, improving organization and reducing redundancy.
+By introducing a  `Lead` class, I encapsulated all lead-related operations into a single structure, improving organization and reducing redundancy.
 
 ``` 
  class Lead:
@@ -466,13 +469,13 @@ By introducing a  ```Lead``` class, I encapsulated all lead-related operations i
 
 #### Outcome
 
-Switching to a class-based code not only simplified the structure but also ensured the program could be extended more easily in the future. For example, methods like ```find_by_email```, ```is_company_in_sales_list```, and ```update_notes``` are now part of the ```Lead``` class, providing a cohesive way to interact with leads.
+Switching to a class-based code not only simplified the structure but also ensured the program could be extended more easily in the future. For example, methods like `find_by_email`, `is_company_in_sales_list`, and `update_notes` are now part of the `Lead` class, providing a cohesive way to interact with leads.
 
 ## Main function
 
-The ```main()``` function handles the user interaction loop. It allows users to add leads (prompts for email, company, and optional notes) and update leads (lets users modify the status or notes of an existing lead).
+The `main()` function handles the user interaction loop. It allows users to add leads (prompts for email, company, and optional notes) and update leads (lets users modify the status or notes of an existing lead).
 
-**Flow Example in ```main():```**
+**Flow Example in `main():`**
 
 ```
 action = input(format_text("Do you want to add or update email? (add/update):\n", color="cyan")).strip().lower()
@@ -667,7 +670,7 @@ See the deployed program here: [Notion Lead Manager](https://auto-emails-e92e0f2
 
 - **ChatGPT**<br>Utilized to assist with generating and refining text for this README.
 
-## Other
+## Other Credits
 
 - **Code Institute**<br>Provided a template that helped establish the program's user interface - [Code Institute P3 Template](https://github.com/Code-Institute-Org/p3-template).
 
