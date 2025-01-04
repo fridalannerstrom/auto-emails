@@ -157,7 +157,7 @@ This database is intentionally simple, containing only the companies that are ou
 
 There have been discussions about complementing this database with additional information, such as contact persons and which salesperson is responsible for the account. However, this information serves no purpose for me in my role. My primary concern is determining whether a company is already in our sales list, ensuring I don’t contact individuals at companies we are already selling to. This database is critical for preventing overlap between leads and existing customers, ensuring our email outreach is efficient and focused.
 
-This list isn’t updated frequently, and when updates are needed, I can handle them manually. For now, I’ve chosen not to include this database in the Python program, as there are other areas where Python automation provides far greater efficiency and impact.
+This list isn’t updated frequently, and when updates are needed, I can handle them manually. For now, I’ve chosen not to include this database in the Python program, besides checking for company overlaps, as there are other areas where Python automation provides far greater efficiency and impact.
 
 ## Project Goals
 
@@ -219,8 +219,10 @@ This flowchart, created in Adobe XD, illustrates the basic process for adding or
 | Feature | Description | 
 | ------- | ---------- | 
 | **Seamless Workflow** | The program is designed to loop in a way that aligns with my workflow. For example, if I try to add an email that already exists in the leads database, I want the program to prompt me to re-enter a new email instead of sending me back to the start. This ensures continuity in the "add leads" process. | 
+| **Updating Lead Workflow** | In my daily workflow, updating a lead's status is far more common than updating notes. When notes are added, it’s usually in conjunction with a status update. It’s very rare that I update notes independently. This program reflects that workflow, prompting the user to add notes immediately after updating a lead’s status. | 
 | **Error Handling** | Similarly, if I for example add an email associated with a company already in the sales list or attempt to update a lead that doesn’t exist in the database, I want clear error messages and the ability to quickly retry without disrupting the workflow. | 
 | **No Hard Stops** | The program is intentionally designed to never "stop" or "end". Once I successfully complete an action — such as adding a new lead or updating a lead’s information — the program should seamlessly return to the beginning, ready for the next input. | 
+| **No Delete Option** | Deleting leads from the database is extremely rare in our workflow. We maintain records of all interactions, including those who are not interested, to ensure a complete history. If someone requests not to be contacted, their status is updated to "Not Interested," and they are excluded from further communications. The only scenario where an email is deleted is upon request, typically for GDPR compliance. Since this situation has never occurred, handling such cases manually is sufficient for now. | 
 
 ## Key Features
 
@@ -236,7 +238,7 @@ This program was built to simplify and streamline the workflow of managing leads
 | **Update Notes for Existing Leads** | 1. Enables users to add or replace notes for existing leads.<br>2. Displays current notes before input for clarity. | 
 | **Clear and Immediate Feedback** | 1. Provides clear, concise feedback for all actions, such as successful updates, errors, or duplicate detections.<br>2. Ensures users always know whether the intended action was successful or requires adjustments. | 
 | **Minimal User Interaction** | 1. Designed to minimize inputs and steps, aligning with the quick workflow needed for sales management. <br>2. Loops processes to allow users to fix errors without restarting the workflow. | 
-| **Enhanced User Experience** | 1. Uses color-coded feedback (via Colorama, more information below) to highlight important information. <br>2. Error messages and success confirmations are designed to provide all necessary information without overwhelming the user. <br>3. Emojis enhance feedback, making it easier to recognize successes or issues.| 
+| **Enhanced User Experience** | 1. Uses color-coded feedback (via Colorama, more information below) in a bold font to highlight program information. <br>2. Error messages and success confirmations are designed to provide all necessary information without overwhelming the user. <br>3. Emojis enhance feedback, making it easier to recognize successes or issues.| 
 | **Colored Messages** | 1. Differentiates program output from user input by using cyan for program messages and white for user input. <br>2. Error messages are displayed in red for immediate attention. <br>3. Success messages are displayed in green to confirm successful actions. |
 | **Input Error Handeling** | 1. Prevents invalid inputs, such as missing "@" in email addresses.<br>2. Prompts users to try again if an input is invalid. <br>3. Skips unnecessary inputs without generating errors. | 
 | **Avioding Breaks** | 1. Ensures the program never stops abruptly or loops back to the beginning when errors happen. | 
@@ -253,7 +255,7 @@ This program was built to simplify and streamline the workflow of managing leads
 
 ✅ **Enhanced Input Validation**<br>The program ensures that user inputs are accurate by verifying key details, such as confirming that an email address is valid and that the status selected matches predefined options. This prevents incorrect or invalid data from being added to the database, maintaining its integrity and reliability.
 
-✅ **Optional to add Company**<br>Due to my workflow, I chose to have company as an optional input when adding new leads. I don't always have information about the company where this person works.
+✅ **Optional to add Company**<br>Due to my workflow, I chose to have company as an optional input when adding new leads. I don't always have information about the company where the potential lead works.
 
 ## How To Use The Program
 
@@ -263,7 +265,7 @@ To view the leads database and verify that leads are being added or updated, vis
 
 To access the company sales list database and ensure accuracy in the workflow, visit: [Company Database](https://sedate-molybdenum-41d.notion.site/company-database-168284e4604f80aca775d10d51bce604?pvs=4)
 
-### How to add a lead
+### How To Add a Lead
 
 ![Add Lead](images/add-lead-readme.gif)
 
@@ -271,18 +273,18 @@ Adding a lead to the database is a straightforward process with minimal steps, d
 
 1. **Start the program**<br>Launch the program with Heroku app here: [Auto Emails Application](https://auto-emails-e92e0f29caf5.herokuapp.com/)
 2. **Choose "Add"**<br>When asked `Do you want to add or update email? (add/update):` type `add` and press enter.
-3. **Enter Email**<br>Type the email you want to add. If it already exists, you’ll see a red message and can re-enter a new email. If it’s new, you’ll see a green confirmation.
-4. **Enter Company (Optional)**<br>Add the company name or press enter to skip. If the company is in the sales list, you’ll be asked to try again with a different email. Otherwise, you’ll get a green confirmation.
+3. **Enter Email**<br>Type the email you want to add. If it already exists in the database, you’ll see a red message and can re-enter a new email. If it’s new to the database, you’ll see a green confirmation.
+4. **Enter Company (Optional)**<br>Add the company name or press enter to skip. If the company is in the sales list database, you’ll be asked to try again with a different email. Otherwise, you’ll get a green confirmation.
 5. **Add Notes (Optional)**<br>Add any relevant notes or press enter to leave it blank.
 6. **Done!**<br>A green success message confirms the lead was added. You can verify this here: [Leads Database](https://sedate-molybdenum-41d.notion.site/auto-emails-168284e4604f806eb9a7dcdc7e005e9b?pvs=4)
 
 ----
 
-### How to update a lead
+### How To Update a Lead
 
 ![Update Lead](images/update-lead-readme.gif)
 
-Updating a lead provides more options compared to adding a lead since you might only want to update the status, the notes, or both. In my workflow, I always update the status first when both need to be changed. Here’s a step-by-step guide to updating a lead:
+Updating a lead provides more options compared to adding a lead since you might only want to update the status, the notes, or both. Here’s a step-by-step guide to updating a lead:
 
 1. **Start the program**<br>Launch the program with Heroku app here: [Auto Emails Application](https://auto-emails-e92e0f29caf5.herokuapp.com/)
 2. **Choose "Update"**<br>When asked `Do you want to add or update email? (add/update):` type `update` and press enter.
@@ -307,7 +309,8 @@ The program is designed to prioritize speed, clarity, and precision for both add
 | **Action Confirmation**     | Success messages confirm completed actions with concise text and an emoji for easy recognition.                                                        | ![Example](images/example-success.png)  |
 | **Relevant Information Only** | When updating leads, the program displays only essential details, such as current status and notes, reducing distractions.                           | ![Example](images/example-information.png) |
 | **Clear Error Messages**    | Error messages use emojis to make failures immediately clear, along with explanations and guidance on resolving the issue.                             | ![Example](images/example-error.png)    |
-| **Feedback After Every Action** | Updates to status and notes are confirmed separately, ensuring transparency and control through the entire process.                                  | ![Example](images/example-status.png)  |
+| **Feedback After Every Action** | Every completed action, such as updating status or notes, is confirmed individually, providing transparency and ensuring the user stays in control. | ![Example](images/example-success.png)  |
+| **Color-Coded Messages** | All text generated by the program is bold and color-coded, helping users easily differentiate between program messages and their own inputs. | ![Example](images/example-status.png)  |
 
 ### Colorama
 
@@ -323,7 +326,8 @@ Colorama is an integral part of this program, enhancing the user experience with
 
 #### Emoji Usage
 
-🟢 **Green Circle:** Used in success messages to confirm that an expected action was completed, such as adding a new lead successfully.<br>
+🟢 **Green Circle:** Used in success messages to confirm that an expected action was completed, such as adding a new lead successfully.
+
 🔴 **Red Circle:** Always paired with error messages to signify that an expected action did not occur.
 
 #### Installation of Colorama
@@ -332,13 +336,11 @@ Colorama was installed using the following command, as outlined in the [official
 
 `pip install colorama`
 
-And import colors and styling to run.py with:
+And import colors and styling to `run.py` with:
 
 `from colorama import Fore, Back, Style`
 
 I also ensured the Colorama library was included in the `requirements.txt` file, which was necessary for deploying the program on Heroku. This allows the program to run smoothly in the cloud environment.
-
-This simple installation allowed for immediate access to Colorama’s features, making it easy to implement clear, color-coded messages throughout the program.
 
 # Program Structure
 
@@ -354,13 +356,24 @@ from notion_client import Client
 Initialize Notion client
 notion = Client(auth=creds["NOTION_TOKEN"]) 
 ```
+
+And using the ID of the two databases:
+
+```
+# Database ID with lead emails
+DATABASE_ID = "168284e4604f8013a728d0aa102775aa"
+
+# Database ID for current customers company
+COMPANY_DATABASE_ID = "168284e4604f80d7acfac51891eb0e3c"
+```
+
 The Notion token is stored in `creds.json`, which is hidden for privacy reasons.
 
 ## Lead Class
 
 The Lead class encapsulates the logic for managing leads. It interacts with the Notion API to perform CRUD (Create, Read, Update, Delete) operations.
 
-**Why use a class?**<br> It keeps the code modular and reusable, and aldo encapsulates lead-specific logic (e.g., validation, database queries).
+**Why use a class?**<br> It keeps the code modular and reusable, and also encapsulates lead-specific logic (e.g., validation, database queries).
 
 ### Code Example: Adding a New Lead
 
@@ -539,8 +552,8 @@ During development, I encountered a few challenges:
 
 | **Issue** | **Description** | **Solution** |
 | --------- | --------------- | ------------ |
-| **Handling Loops in the Main Function** | I needed the program to loop back to specific points after errors, or back to start, e. g., when not wanting to add notes. | To achieve this, I implemented nested loops and a recursive call to main() within the loop to return to the starting point. While this solution works, it feels suboptimal and somewhat clunky since calling the main function within itself isn't the cleanest approach. It's functional for now but could benefit from a more elegant solution in the future. |
-| **Formatting Message Repetition** | Initial implementation repeated formatting logic for every message. | Created the ```format_text``` function to simplify message styling. | 
+| **Calling `main` from Lead Methods** | In the current implementation, the `main` function is called directly within methods of the Lead class (e.g., update_notes and update_status_with_notes). While functional, this approach doesn't feel like the best solution. | A better solution would be to separate the program flow logic from the Lead class. This issue has however not been fixed in this version of the program but is planned as a future improvement. Refactoring the code to separate class responsibilities from program flow will make the code cleaner. |
+| **Formatting Message Repetition** | Initial implementation repeated formatting logic for every message. | Created the `format_text` function to simplify message styling. | 
 | **Notion Select Type Issue** | Notion uses two types of select fields, one "select" and one "status". The program was trying to update with the wrong type, causing an error. | Updated the code to use the "status" type for the Notion select field. | 
 | **Repetitive Notes Code** | The handling of notes appears in two places: one after updating the status and another when adding notes directly. This results in repetitive code. | A potential solution is to create a dedicated function or method for managing notes, which can be reused in both scenarios to improve maintainability and reduce redundancy. However, this has not yet been implemented in the current version of the program. | 
 
@@ -618,7 +631,7 @@ To evaluate whether the program meets the goals and requirements outlined earlie
 
 ## Input Testing 
 
-This program has a total of xx user inputs. Each input has been tested according to the list below. The test results are below.
+This program has a total of 8 user inputs. Each input has been tested according to the list below. The test results are below.
 
 **Validation Test for Inputs:**
 - a letter `a`
