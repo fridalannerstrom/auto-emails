@@ -631,7 +631,7 @@ To evaluate whether the program meets the goals and requirements outlined earlie
 
 ## Input Testing 
 
-This program has a total of 8 user inputs. Each input has been tested according to the list below. The test results are below.
+This program has a total of 9 user inputs. Each input has been tested according to the list below. The test results are below.
 
 **Validation Test for Inputs:**
 - a letter `a`
@@ -650,8 +650,9 @@ This program has a total of 8 user inputs. Each input has been tested according 
 | **Input 4: Enter notes** | Ask if the user wants to update the status or notes of an existing lead | Accept any input. No restrictions. `ENTER` skips input. | ✅ Works as expected | ✅ Yes | ![Input 4](images/input-4-error.png) | 
 | **Input 5: Update status or notes** | Input that asks if the user wants to add or update a lead | Only accept `status` or `notes`. All other inputs should give an error. | ✅ Works as expected | ✅ Yes | ![Input 5](images/input-5-error.png) | 
 | **Input 6: Enter new status** | Update the status of an existing lead | Accept only predefined statuses (e.g., `Not sent`, `Meeting`). | ✅ Works as expected | ✅ Yes | ![Input 6](images/input-6-error.png) | 
-| **Input 7: Add or replace notes** | Ask if the user wants to add or replace existing notes | Only accept `add` or `replace`. All other inputs should give an error. | ✅ Works as expected | ✅ Yes | ![Input 7](images/input-7-error.png) | 
-| **Input 8: Enter new notes** | Add or replace notes for an existing lead | Accept any input. No restrictions. | ✅ Works as expected | ✅ Yes | ![Input 8](images/input-8-error.png) | 
+| **Input 7: Update notes** | Ask if user wants to add notes after status update | Only accept `yes` or `no`. All other inputs should give error. | ✅ Works as expected | ✅ Yes | ![Input 9](images/input-9-error.png) | 
+| **Input 8: Add or replace notes** | Ask if the user wants to add or replace existing notes | Only accept `add` or `replace`. All other inputs should give an error. | ✅ Works as expected | ✅ Yes | ![Input 7](images/input-7-error.png) | 
+| **Input 9: Enter new notes** | Add or replace notes for an existing lead | Accept any input. No restrictions. | ✅ Works as expected | ✅ Yes | ![Input 8](images/input-8-error.png) | 
 
 
 ## Known Bugs and Limitations
