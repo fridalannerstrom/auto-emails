@@ -365,17 +365,31 @@ The Lead class encapsulates the logic for managing leads. It interacts with the 
 ### Code Example: Adding a New Lead
 
 ``` 
-def create(self, email, company=None, notes=None):
-    properties = {
-        "E-mail": {"title": [{"text": {"content": email}}]},
-    }
-    if company:
-        properties["Company"] = {"rich_text": [{"text": {"content": company}}]}
-    if notes:
-        properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
-    
-    self.notion.pages.create(parent={"database_id": self.database_id}, properties=properties)
-    print(format_text(f"🟢 Success! Lead '{email}' added to the database.", color="green"))
+    def create(self, email, company=None, notes=None):
+        """
+        Add a new lead to the database.
+        """
+        properties = {
+            "E-mail": {"title": [{"text": {"content": email}}]},
+        }
+        if company:
+            properties["Company"] = {
+                "rich_text": [{"text": {"content": company}}]
+            }
+        if notes:
+            properties["Notes"] = {
+                "rich_text": [{"text": {"content": notes}}]
+            }
+
+        self.notion.pages.create(
+            parent={"database_id": self.database_id}, properties=properties
+        )
+        print(
+            format_text(
+                f"🟢 Success! Lead '{email}' added to the database.",
+                color="green",
+            )
+        )
 ``` 
 
 ### Functions vs Class
@@ -426,43 +440,49 @@ While functional, this approach caused repetitive code, making it harder to main
 
 By introducing a  `Lead` class, I encapsulated all lead-related operations into a single structure, improving organization and reducing redundancy.
 
-``` 
- class Lead:
-    """Manages lead data stored in the Notion database."""
+Code example from `Lead` class:
 
-    def __init__(self, notion_client, database_id, company_database_id):
+``` 
+     def __init__(self, notion_client, database_id, company_database_id):
+        """
+        Set the Lead Class with Notion client and database IDs
+        """
         self.notion = notion_client
         self.database_id = database_id
         self.company_database_id = company_database_id
 
     def is_valid_email(self, email):
-        """Validate the format of an email address."""
+        """
+        Validate the format of an email address.
+        """
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         return bool(re.match(pattern, email))
 
     def find_by_email(self, email):
-        """Search for a lead in the database by their email."""
+        """
+        Search for a lead in the email database by their email.
+        """
         response = self.notion.databases.query(database_id=self.database_id)
         for page in response["results"]:
-            if page["properties"]["E-mail"]["title"][0]["text"]["content"].lower() == email.lower():
-                return page
+            email_property = page["properties"]["E-mail"]
+            email_title = email_property["title"][0]["text"]["content"].lower()
+            if email_title == email.lower():
+                return page  # Return the full page object
         return None
 
-    def create(self, email, company=None, notes=None):
-        """Add a new lead to the database."""
-        properties = {
-            "E-mail": {"title": [{"text": {"content": email}}]},
-        }
-        if company:
-            properties["Company"] = {"rich_text": [{"text": {"content": company}}]}
-        if notes:
-            properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
-
-        self.notion.pages.create(
-            parent={"database_id": self.database_id},
-            properties=properties,
+    def is_company_in_sales_list(self, company):
+        """
+        Search for company in the current company sales list.
+        """
+        response = self.notion.databases.query(
+            database_id=self.company_database_id
         )
-        print(f"🟢 Success! Lead '{email}' added to the database.")
+        for page in response["results"]:
+            company_property = page["properties"]["Company"]
+            company_title = company_property["title"][0]["text"]["content"]
+            if company_title.lower() == company.lower():
+                return True
+        return False
 ```
 
 ----
@@ -478,20 +498,30 @@ The `main()` function handles the user interaction loop. It allows users to add 
 **Flow Example in `main():`**
 
 ```
-action = input(format_text("Do you want to add or update email? (add/update):\n", color="cyan")).strip().lower()
-if action == "add":
-    email = input(format_text("Enter email:\n", color="cyan")).strip()
-    if lead_manager.is_valid_email(email):
-        # Add lead logic
-elif action == "update":
-    email = input(format_text("Enter email:\n", color="cyan")).strip()
-    if lead_manager.find_by_email(email):
-        # Update lead logic
+            if action == "add":
+                # Check if email is in database
+                if lead_manager.find_by_email(email):
+                    print(
+                        format_text(
+                            f"🔴 Email '{email}' already exists in "
+                            "the database. Please enter a new email.",
+                            color="red",
+                        )
+                    )
+                    continue
+
+                print(
+                    format_text(
+                            "🟢 Good to go! "
+                            f"'{email}' does not exist in the database.",
+                            color="green",
+                    )
+                )
 ```
 
 ## Other
 
-To avoid repetition, a function ```format_text``` was created for formatting messages in the terminal. This ensures consistent color coding and bold styling.
+To avoid repetition, a function `format_text` was created for formatting messages in the terminal. This ensures consistent color coding and bold styling.
 
 **Before:**
 ```
