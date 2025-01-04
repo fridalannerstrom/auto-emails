@@ -550,7 +550,9 @@ During development, I encountered a few challenges:
 
 ## Code Validation
 
-PEP test thing
+![Python Linter](images/python-linter.png)
+
+The code was validated using the [CI Python Linter](https://pep8ci.herokuapp.com/#). Initially, a few lines were flagged for exceeding the recommended length, but these issues have since been resolved. The code now passes validation without any errors or warnings, meeting all style and formatting guidelines.
 
 ## Workflow Testing
 
@@ -600,20 +602,23 @@ This program has a total of xx user inputs. Each input has been tested according
 
 ## Known Bugs and Limitations
 
-Not any that I know of!
+Not any that I know of, please let me know if you find any!
 
 # Future Improvements
 
-Explain that I will definetly keep working with this project because it helped me so much already. I see the possibilitues with python and Notion for this workflow. Something that I want to do is:
+This project has already proven incredibly helpful in streamlining my workflow, and I see great potential in further developing it. Here are some of the enhancements I plan to implement in the future:
 
 ## Automated Email Sending
-The program could be extended to automatically send emails using predefined templates. Maybe a bunch of emails at a time. This would streamline the workflow further, eliminating the need to switch between the program and an email client.
+One significant improvement would be the ability to automatically send emails directly from Outlook using predefined templates. This could include sending a batch of emails at once, further streamlining the workflow by removing the need to switch between the program and Outlook.
 
 ### Integration with CRM Systems
-Add integration with CRM platform Upsales so that Key Account Managers easily can see activity for leads.
+Integrating this program with a Upsales, a CRM program we use, would provide Key Account Managers with seamless access to lead activity. This would allow for better tracking, visibility, and collaboration across teams, enhancing the overall effectiveness of the lead management process.
 
 ## Automated Reminders
-Set up automatic reminders for follow-ups. For instance, if a lead hasn’t replied within a week, the program could send a reminder notification or email.
+Another enhancement would be to set up automated reminders for follow-ups. For example, if a lead hasn’t responded within a week, the program could send a notification or even a follow-up email automatically. This feature would help ensure that no leads are overlooked and that timely follow-ups are maintained.
+
+## Automatic Update of "Latest Contact" Date
+To improve accuracy and save time, the program could be extended to automatically update the "Latest Contact" date field. This update could be based on when an email is sent to or received from a lead, ensuring that the database always reflects the most recent interaction without manual input.
 
 # Deployment
 
