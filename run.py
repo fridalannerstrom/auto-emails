@@ -213,6 +213,10 @@ class Lead:
                     color="cyan",
                 )
             ).strip().lower()
+
+            # Check if user wants to skip back to start
+            check_for_skip(action)
+
             if add_notes == "yes":
                 print(format_text(
                         f"Current notes: {current_notes}",
@@ -225,10 +229,18 @@ class Lead:
                             color="cyan",
                         )
                     ).strip().lower()
+
+                    # Check if user wants to skip back to start
+                    check_for_skip(note_action)
+
                     if note_action in ["add", "replace"]:
                         content = input(
                             format_text("Enter your notes:\n", color="cyan")
                         ).strip()
+
+                        # Check if user wants to skip back to start
+                        check_for_skip(content)
+
                         self.update_notes(page_id, note_action, content)
                         break
                     else:
@@ -255,6 +267,14 @@ class Lead:
                         color="red",
                     )
                 )
+
+def check_for_skip(input_value):
+    """
+    Check if the input value is 'skip' and return to main if true.
+    """
+    if input_value.strip().lower() == "skip":
+        print(format_text("Skipping to start...", color="cyan"))
+        main()
 
 
 def main():
@@ -288,6 +308,10 @@ def main():
 
         while True:  # Loop for email input
             email = input(format_text("Enter email:\n", color="cyan")).strip()
+
+            # Check if user wants to skip back to start
+            check_for_skip(email)
+
             # Check if email is valid
             if not lead_manager.is_valid_email(email):
                 print(
@@ -324,6 +348,9 @@ def main():
                         color="cyan")
                 ).strip()
 
+                # Check if user wants to skip back to start
+                check_for_skip(company)
+
                 # Only run the company check if a company is provided
                 if company:
                     if lead_manager.is_company_in_sales_list(company):
@@ -346,6 +373,10 @@ def main():
                 notes = input(
                     format_text("Enter notes (optional):\n", color="cyan")
                 ).strip()
+
+                # Check if user wants to skip back to start
+                check_for_skip(notes)
+
                 lead_manager.create(email, company, notes)
                 break
 
@@ -379,6 +410,9 @@ def main():
                         )
                     ).strip().lower()
 
+                    # Check if user wants to skip back to start
+                    check_for_skip(update_action)
+
                     if update_action == "status":
                         print(
                             format_text(
@@ -401,6 +435,10 @@ def main():
                             new_status_input = input(
                                 format_text("New status:\n", color="cyan")
                             ).strip()
+
+                            # Check if user wants to skip back to start
+                            check_for_skip(new_status_input)
+
                             if new_status_input in VALID_STATUSES:
                                 new_status = new_status_input
                             else:
@@ -446,12 +484,19 @@ def main():
                                 )
                             ).strip().lower()
 
+                            # Check if user wants to skip back to start
+                            check_for_skip(note_action)
+
                             if note_action in ["add", "replace"]:
                                 content = input(
                                     format_text(
                                             "Enter your notes:\n",
                                             color="cyan")
                                 ).strip()
+
+                                # Check if user wants to skip back to start
+                                check_for_skip(content)
+
                                 lead_manager.update_notes(
                                     page_id, note_action, content)
                                 break
