@@ -554,6 +554,10 @@ During development, I encountered a few challenges:
 
 The code was validated using the [CI Python Linter](https://pep8ci.herokuapp.com/#). Initially, a few lines were flagged for exceeding the recommended length, but these issues have since been resolved. The code now passes validation without any errors or warnings, meeting all style and formatting guidelines.
 
+![Python Syntax](images/python-syntax.png) 
+
+The code was run through a [Python syntax checker](https://extendsclass.com/python-tester.html) with no errors.
+
 ## Workflow Testing
 
 To evaluate whether the program meets the goals and requirements outlined earlier, we conducted a thorough review of each feature. Below is a detailed checklist of the requirements, descriptions, and whether the program successfully implemented them.
