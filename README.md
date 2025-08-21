@@ -1,5 +1,10 @@
 # Streamlining Leads Management in Notion ✉️
 
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)
+![Notion](https://img.shields.io/badge/Notion-000000?logo=notion)
+![Automation](https://img.shields.io/badge/Automation-FF9800?logo=zapier)
+![Email](https://img.shields.io/badge/Emails-Streamlined-4CAF50)
+
 Welcome to my project for simplifying leads management in Notion!
 
 I work at a B2B company, where I support the sales team by collecting leads, crafting tailored emails, and tracking follow-ups to book meetings. While Notion serves as our primary tool for managing these workflows, handling large datasets often feels cumbersome and slow.
